@@ -63,7 +63,7 @@
 
   /* ---------- Hero ---------- */
   .hero{height:100vh;min-height:640px;position:relative;display:flex;align-items:flex-end;background:var(--white);overflow:hidden;}
-  .hero-img{position:absolute;inset:0;width:100%;height:100%;background:url('https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=1600&auto=format&fit=crop') center 20%/cover no-repeat;transform:scale(1.08);filter:grayscale(6%);}
+  .hero-img{position:absolute;inset:0;width:100%;height:100%;background:url('URL_PHOTO_1') center 20%/cover no-repeat;transform:scale(1.08);filter:grayscale(6%);}
   .hero-gradient{position:absolute;inset:0;background:linear-gradient(180deg, rgba(255,255,255,0) 40%, rgba(255,255,255,.94) 92%);}
   .hero-content{position:relative;z-index:2;width:100%;padding:0 48px 90px;display:flex;flex-direction:column;align-items:flex-start;gap:22px;}
   .hero-eyebrow{font-size:11px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);font-weight:500;opacity:0;animation:fadeUp 1.1s .3s var(--ease) forwards;}
@@ -202,11 +202,12 @@
   .qv-info .price{font-size:16px;color:var(--gray-dark);margin-bottom:24px;}
   .qv-info .desc{font-size:13px;color:#777;line-height:1.8;margin-bottom:28px;}
   .qv-label{font-size:10.5px;letter-spacing:2px;text-transform:uppercase;color:#999;margin-bottom:12px;display:block;}
-  .qv-sizes{display:flex;gap:10px;margin-bottom:30px;}
+  .qv-sizes{display:flex;gap:10px;margin-bottom:30px;flex-wrap:wrap;}
   .qv-sizes button{width:44px;height:44px;border:1px solid #ddd;font-size:12px;transition:all .25s var(--ease);}
   .qv-sizes button:hover, .qv-sizes button.sel{background:var(--black);color:var(--white);border-color:var(--black);}
   .qv-add{width:100%;background:var(--black);color:var(--white);padding:18px 0;font-size:11.5px;letter-spacing:2.4px;text-transform:uppercase;transition:opacity .3s;}
   .qv-add:hover{opacity:.82;}
+  .qv-add:disabled{background:#ccc;cursor:not-allowed;}
   .size-guide-link{display:block;text-align:center;margin-top:16px;font-size:11px;text-decoration:underline;color:#999;cursor:pointer;}
 
   /* ---------- Search overlay ---------- */
@@ -299,12 +300,14 @@
   .pp-sizes button{width:48px;height:48px;border:1px solid #ddd;font-size:12px;transition:all .25s var(--ease);}
   .pp-sizes button:hover,.pp-sizes button.sel{background:var(--black);color:var(--white);border-color:var(--black);}
   .pp-size-guide{font-size:11px;text-decoration:underline;color:#999;cursor:pointer;margin-bottom:34px;display:inline-block;}
+  .pp-coming-soon-note{font-size:13px;color:#999;margin-bottom:30px;}
   .pp-qty-add{display:flex;gap:14px;margin-bottom:40px;}
   .pp-qty{display:flex;align-items:center;border:1px solid #ddd;}
   .pp-qty button{width:44px;height:52px;font-size:14px;}
   .pp-qty span{width:36px;text-align:center;font-size:13px;}
   .pp-add-btn{flex:1;background:var(--black);color:var(--white);font-size:11.5px;letter-spacing:2.4px;text-transform:uppercase;transition:opacity .3s;}
   .pp-add-btn:hover{opacity:.85;}
+  .pp-add-btn:disabled{background:#ccc;cursor:not-allowed;}
   .pp-accordion{border-top:1px solid #eee;}
   .pp-acc-item{border-bottom:1px solid #eee;}
   .pp-acc-head{display:flex;justify-content:space-between;align-items:center;padding:20px 2px;cursor:pointer;font-size:12.5px;letter-spacing:.5px;text-transform:uppercase;}
@@ -416,28 +419,29 @@
     </div>
     <div class="coll-grid">
       <div class="coll-card reveal" onclick="filterByCategory('new')">
-        <img src="pull.png" alt="New Arrivals">
+        <img src="URL_PHOTO_1" alt="New Arrivals">
         <span class="coll-badge">Nouveau</span>
         <div class="coll-label"><span class="name">New Arrivals</span><span class="sub">Découvrir →</span></div>
       </div>
       <div class="coll-card reveal" onclick="filterByCategory('Hoodies')">
-        <img src="https://images.unsplash.com/photo-1618354691373-d851c5c3a990?q=80&w=900&auto=format&fit=crop" alt="Hoodies">
+        <img src="URL_PHOTO_2" alt="Hoodies">
         <div class="coll-label"><span class="name">Hoodies</span><span class="sub">Découvrir →</span></div>
       </div>
       <div class="coll-card reveal" onclick="filterByCategory('T-Shirts')">
-        <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=900&auto=format&fit=crop" alt="T-Shirts">
+        <img src="URL_PHOTO_3" alt="T-Shirts">
         <div class="coll-label"><span class="name">T-Shirts</span><span class="sub">Découvrir →</span></div>
       </div>
-      <div class="coll-card reveal" onclick="filterByCategory('Pants')">
-        <img src="https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?q=80&w=900&auto=format&fit=crop" alt="Pants">
-        <div class="coll-label"><span class="name">Pants</span><span class="sub">Découvrir →</span></div>
+      <div class="coll-card reveal" onclick="filterByCategory('Joggings')">
+        <img src="URL_PHOTO_JOGGING_1" alt="Joggings">
+        <span class="coll-badge" style="background:var(--gold);color:var(--white);">Bientôt</span>
+        <div class="coll-label"><span class="name">Joggings</span><span class="sub">Découvrir →</span></div>
       </div>
       <div class="coll-card reveal" onclick="filterByCategory('Accessories')">
-        <img src="https://images.unsplash.com/photo-1521369909029-2afed882baee?q=80&w=900&auto=format&fit=crop" alt="Accessories">
+        <img src="URL_PHOTO_6" alt="Accessories">
         <div class="coll-label"><span class="name">Accessories</span><span class="sub">Découvrir →</span></div>
       </div>
       <div class="coll-card reveal" onclick="filterByCategory('limited')">
-        <img src="https://images.unsplash.com/photo-1503341504253-dff4815485f1?q=80&w=900&auto=format&fit=crop" alt="Limited Drop">
+        <img src="URL_PHOTO_5" alt="Limited Drop">
         <span class="coll-badge" style="background:var(--gold);color:var(--white);">Limited</span>
         <div class="coll-label"><span class="name">Limited Drop</span><span class="sub">Découvrir →</span></div>
       </div>
@@ -473,15 +477,15 @@
   <section class="lookbook">
     <div class="look-strip">
       <div class="look-item reveal">
-        <img src="https://images.unsplash.com/photo-1556905055-8f358a7a47b2?q=80&w=1000&auto=format&fit=crop" alt="Lookbook 1">
+        <img src="URL_PHOTO_1" alt="Lookbook 1">
         <span class="look-caption">Look 01 — Eclipse</span>
       </div>
       <div class="look-item reveal">
-        <img src="https://images.unsplash.com/photo-1516826957135-700dedea698c?q=80&w=800&auto=format&fit=crop" alt="Lookbook 2">
+        <img src="URL_PHOTO_5" alt="Lookbook 2">
         <span class="look-caption">Look 02 — Halo</span>
       </div>
       <div class="look-item reveal">
-        <img src="https://images.unsplash.com/photo-1552374196-c4e7ffc6e126?q=80&w=800&auto=format&fit=crop" alt="Lookbook 3">
+        <img src="URL_PHOTO_6" alt="Lookbook 3">
         <span class="look-caption">Look 03 — Orbit</span>
       </div>
     </div>
@@ -518,6 +522,7 @@
         <a onclick="filterByCategory('new')" href="#new-arrivals">New Arrivals</a>
         <a onclick="filterByCategory('Hoodies')" href="#new-arrivals">Hoodies</a>
         <a onclick="filterByCategory('T-Shirts')" href="#new-arrivals">T-Shirts</a>
+        <a onclick="filterByCategory('Joggings')" href="#new-arrivals">Joggings</a>
         <a onclick="filterByCategory('limited')" href="#new-arrivals">Limited Drop</a>
       </div>
       <div class="footer-col">
@@ -560,14 +565,20 @@
         <div class="pp-rating" id="ppRating"></div>
         <div class="pp-price" id="ppPrice"></div>
 
-        <span class="pp-block-label">Couleur — <span id="ppColorName"></span></span>
-        <div class="pp-colors" id="ppColors"></div>
+        <div id="ppColorBlock">
+          <span class="pp-block-label">Couleur — <span id="ppColorName"></span></span>
+          <div class="pp-colors" id="ppColors"></div>
+        </div>
 
-        <span class="pp-block-label">Taille</span>
-        <div class="pp-sizes" id="ppSizes"></div>
-        <span class="pp-size-guide" onclick="openSizeGuide()">Guide des tailles</span>
+        <div id="ppSizeBlock">
+          <span class="pp-block-label">Taille</span>
+          <div class="pp-sizes" id="ppSizes"></div>
+          <span class="pp-size-guide" onclick="openSizeGuide()">Guide des tailles</span>
+        </div>
 
-        <div class="pp-qty-add">
+        <div class="pp-coming-soon-note" id="ppComingSoonNote" style="display:none;">Ce produit sera bientôt disponible à la vente. Reviens vite !</div>
+
+        <div class="pp-qty-add" id="ppQtyAddBlock">
           <div class="pp-qty">
             <button onclick="ppChangeQty(-1)">−</button>
             <span id="ppQty">1</span>
@@ -668,22 +679,33 @@
 <div class="toast" id="toast"></div>
 
 <script>
+/* =================================================================
+   ZONE IMAGES — colle ici les liens (ImgBB / Chariow / Cloudinary)
+   de tes 6 photos SATURN. Repère chaque URL_PHOTO_x dans ce fichier
+   (Ctrl+F) et remplace par ton vrai lien.
+   Photo 1 = Hoodie noir (3 vues)   Photo 4 = T-shirt blanc flatlay
+   Photo 2 = Hoodie gris            Photo 5 = T-shirt blanc coupe US
+   Photo 3 = T-shirt noir porté     Photo 6 = T-shirt noir coupe US
+   Les joggings et la casquette n'ont pas encore de photo -> laissés
+   en "Bientôt disponible" jusqu'à ce que tu envoies les visuels.
+   ================================================================= */
+
 /* ================= PRODUCT DATA ================= */
 const PRODUCTS = [
-  {id:'hoodie-eclipse', name:'Hoodie Eclipse', category:'Hoodies', tags:['new'], price:145, img:'https://images.unsplash.com/photo-1556821840-3a63f95609a7', colors:[{hex:'#000',name:'Noir'},{hex:'#1a1a1a',name:'Anthracite'},{hex:'#f5f5f5',name:'Blanc cassé'}], rating:4.9, reviews:31, desc:"Hoodie oversize en molleton épais 480gsm. Coupe ample, capuche doublée, finitions brutes. Une pièce pensée pour durer."},
-  {id:'hoodie-nova', name:'Hoodie Nova', category:'Hoodies', tags:['limited'], price:150, img:'https://images.unsplash.com/photo-1618354691373-d851c5c3a990', colors:[{hex:'#000',name:'Noir'},{hex:'#c8a86b',name:'Or discret'}], rating:4.7, reviews:18, desc:"Silhouette oversize, molleton gratté intérieur, cordon doré discret. Édition limitée."},
-  {id:'hoodie-orbit', name:'Hoodie Orbit', category:'Hoodies', tags:['new'], price:155, img:'https://images.unsplash.com/photo-1556905055-8f358a7a47b2', colors:[{hex:'#1a1a1a',name:'Anthracite'},{hex:'#f5f5f5',name:'Blanc cassé'}], rating:4.6, reviews:12, desc:"Hoodie structuré à capuche renforcée, coupe droite intemporelle."},
-  {id:'tee-orbit', name:'T-Shirt Orbit', category:'T-Shirts', tags:['new'], price:85, img:'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab', colors:[{hex:'#fff',name:'Blanc'},{hex:'#000',name:'Noir'}], rating:4.8, reviews:27, desc:"T-shirt en coton peigné 240gsm, coupe droite. Col renforcé, tombé structuré."},
-  {id:'tee-gravity', name:'T-Shirt Gravity', category:'T-Shirts', tags:[], price:85, img:'https://images.unsplash.com/photo-1503341504253-dff4815485f1', colors:[{hex:'#000',name:'Noir'},{hex:'#fff',name:'Blanc'},{hex:'#1a1a1a',name:'Anthracite'}], rating:4.5, reviews:9, desc:"Coupe oversize, coton bio 220gsm, ourlet côtelé renforcé."},
-  {id:'tee-lunar', name:'T-Shirt Lunar', category:'T-Shirts', tags:['limited'], price:90, img:'https://images.unsplash.com/photo-1521369909029-2afed882baee', colors:[{hex:'#f5f5f5',name:'Blanc cassé'},{hex:'#1a1a1a',name:'Anthracite'}], rating:4.4, reviews:7, desc:"T-shirt édition limitée, sérigraphie discrète ton sur ton."},
-  {id:'pants-halo', name:'Pantalon Halo', category:'Pants', tags:['new'], price:165, img:'https://images.unsplash.com/photo-1594633312681-425c7b97ccd1', colors:[{hex:'#1a1a1a',name:'Anthracite'},{hex:'#f5f5f5',name:'Blanc cassé'}], rating:4.7, reviews:15, desc:"Pantalon droit en twill lourd, taille élastiquée, poches zippées discrètes."},
-  {id:'pants-comet', name:'Pantalon Comet', category:'Pants', tags:[], price:170, img:'https://images.unsplash.com/photo-1552374196-c4e7ffc6e126', colors:[{hex:'#000',name:'Noir'}], rating:4.3, reviews:6, desc:"Coupe cargo épurée, tissu résistant, ceinture ajustable ton sur ton."},
-  {id:'cap-rings', name:'Casquette Rings', category:'Accessories', tags:['new'], price:95, img:'https://images.unsplash.com/photo-1521369909029-2afed882baee', colors:[{hex:'#000',name:'Noir'},{hex:'#f5f5f5',name:'Blanc cassé'}], rating:4.6, reviews:11, desc:"Casquette structurée 6 panneaux, broderie ton sur ton, sangle ajustable en cuir.", oneSize:true},
-  {id:'bag-orbit', name:'Sac Orbit', category:'Accessories', tags:['limited'], price:135, img:'https://images.unsplash.com/photo-1516826957135-700dedea698c', colors:[{hex:'#000',name:'Noir'}], rating:4.9, reviews:8, desc:"Sac bandoulière en toile robuste, quincaillerie or discret, édition limitée.", oneSize:true},
+  {id:'hoodie-noir', name:'Hoodie SATURN Noir', category:'Hoodies', tags:['new'], price:145, img:'URL_PHOTO_1', colors:[{hex:'#000',name:'Noir'}], rating:4.9, reviews:31, desc:"Hoodie oversize en molleton épais, logo SATURN floqué sur la poitrine. Coupe ample, capuche doublée, finitions soignées."},
+  {id:'hoodie-gris', name:'Hoodie SATURN Gris', category:'Hoodies', tags:['new'], price:145, img:'URL_PHOTO_2', colors:[{hex:'#c9c9c9',name:'Gris chiné'}], rating:4.7, reviews:18, desc:"Hoodie oversize gris chiné, logo SATURN imprimé ton sur ton. Coupe ample, idéal toutes saisons."},
+  {id:'tee-noir', name:'T-Shirt SATURN Noir', category:'T-Shirts', tags:['new'], price:85, img:'URL_PHOTO_3', colors:[{hex:'#000',name:'Noir'}], rating:4.8, reviews:27, desc:"T-shirt noir 100% coton, logo SATURN imprimé blanc en poitrine. Coupe droite classique."},
+  {id:'tee-blanc', name:'T-Shirt SATURN Blanc', category:'T-Shirts', tags:[], price:85, img:'URL_PHOTO_4', colors:[{hex:'#fff',name:'Blanc'}], rating:4.5, reviews:9, desc:"T-shirt blanc épuré, logo SATURN imprimé noir en poitrine, finitions renforcées."},
+  {id:'tee-blanc-us', name:'T-Shirt SATURN Blanc — Coupe Américaine', category:'T-Shirts', tags:['new'], price:90, img:'URL_PHOTO_5', colors:[{hex:'#fff',name:'Blanc'}], rating:4.6, reviews:5, desc:"T-shirt oversize à coupe américaine — épaules tombantes, manches larges — dans un tissu épais premium."},
+  {id:'tee-noir-us', name:'T-Shirt SATURN Noir — Coupe Américaine', category:'T-Shirts', tags:['new'], price:90, img:'URL_PHOTO_6', colors:[{hex:'#000',name:'Noir'}], rating:4.7, reviews:4, desc:"T-shirt oversize à coupe américaine — épaules tombantes, manches larges — dans un tissu épais premium."},
+  {id:'jogging-anthracite', name:'Jogging SATURN Anthracite', category:'Joggings', tags:['new'], price:120, img:'URL_PHOTO_JOGGING_1', colors:[{hex:'#1a1a1a',name:'Anthracite'}], rating:0, reviews:0, desc:"Jogging confortable en molleton épais, taille élastiquée, poches zippées discrètes.", comingSoon:true},
+  {id:'jogging-noir', name:'Jogging SATURN Noir', category:'Joggings', tags:[], price:120, img:'URL_PHOTO_JOGGING_2', colors:[{hex:'#000',name:'Noir'}], rating:0, reviews:0, desc:"Jogging noir uni, coupe droite, ceinture ajustable ton sur ton.", comingSoon:true},
+  {id:'cap-rings', name:'Casquette Rings', category:'Accessories', tags:[], price:95, img:'URL_PHOTO_CASQUETTE', colors:[{hex:'#000',name:'Noir'}], rating:0, reviews:0, desc:"Casquette structurée 6 panneaux, broderie ton sur ton, sangle ajustable en cuir.", oneSize:true, comingSoon:true},
+  {id:'bag-orbit', name:'Sac Orbit', category:'Accessories', tags:['limited'], price:135, img:'URL_PHOTO_SAC', colors:[{hex:'#000',name:'Noir'}], rating:4.9, reviews:8, desc:"Sac bandoulière en toile robuste, quincaillerie or discret, édition limitée.", oneSize:true},
 ];
 const SIZES = ['XS','S','M','L','XL'];
 const ALL_COLORS = [...new Map(PRODUCTS.flatMap(p=>p.colors).map(c=>[c.hex,c])).values()];
-const CATEGORIES = ['Hoodies','T-Shirts','Pants','Accessories'];
+const CATEGORIES = ['Hoodies','T-Shirts','Joggings','Accessories'];
 
 const REVIEWS_POOL = [
   {name:'Jean-Marc A.', txt:"Qualité au-dessus de mes attentes, la matière est épaisse et la coupe tombe parfaitement. Livraison rapide jusqu'à Cotonou."},
@@ -756,15 +778,16 @@ function renderGrid(){
       <div class="prod-media">
         <div class="shadow-lift"></div>
         <img src="${p.img}?q=80&w=800&auto=format&fit=crop" alt="${p.name}" loading="lazy">
+        ${p.comingSoon ? '<span class="coll-badge" style="background:var(--gold);color:var(--white);">Bientôt disponible</span>' : ''}
         <button class="wishlist-btn" onclick="event.stopPropagation(); toggleWishlist(this)" aria-label="Wishlist">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="1.4"><path d="M12 21s-7.5-4.6-10-9.3C0.3 8 2 4 6 4c2 0 3.5 1 6 3.4C14.5 5 16 4 18 4c4 0 5.7 4 4 7.7C19.5 16.4 12 21 12 21z"/></svg>
         </button>
-        <button class="quick-view-btn" onclick="event.stopPropagation(); openQuickView('${p.id}')">Quick View</button>
+        <button class="quick-view-btn" onclick="event.stopPropagation(); openQuickView('${p.id}')">${p.comingSoon ? 'Aperçu' : 'Quick View'}</button>
       </div>
       <div class="prod-info">
         <div class="name">${p.name}</div>
-        <div class="price">${p.price} €</div>
-        <div class="rating">★ ${p.rating} <span style="color:#bbb;">(${p.reviews})</span></div>
+        <div class="price">${p.comingSoon ? 'Bientôt disponible' : p.price + ' €'}</div>
+        <div class="rating">${p.reviews ? `★ ${p.rating} <span style="color:#bbb;">(${p.reviews})</span>` : ''}</div>
         <div class="swatches">${p.colors.map(c=>`<span class="swatch" style="background:${c.hex};"></span>`).join('')}</div>
         <div class="sizes-row">${p.oneSize ? 'Taille unique' : SIZES.join(' · ')}</div>
       </div>
@@ -794,17 +817,27 @@ function openQuickView(id){
   qvSelectedSize = null;
   document.getElementById('qvImage').src = qvProduct.img + '?q=80&w=1000&auto=format&fit=crop';
   document.getElementById('qvName').textContent = qvProduct.name;
-  document.getElementById('qvPrice').textContent = qvProduct.price + ' €';
+  document.getElementById('qvPrice').textContent = qvProduct.comingSoon ? 'Bientôt disponible' : qvProduct.price + ' €';
   document.getElementById('qvDesc').textContent = qvProduct.desc;
-  document.getElementById('qvSizes').innerHTML = qvProduct.oneSize
-    ? `<button class="sel" onclick="qvSelectedSize='Unique'">Taille unique</button>`
-    : SIZES.map(s=>`<button onclick="qvSelectSize(this,'${s}')">${s}</button>`).join('');
+  const qvAddBtn = document.getElementById('qvAddBtn');
+  if(qvProduct.comingSoon){
+    document.getElementById('qvSizes').innerHTML = `<span style="font-size:12px;color:#999;">Disponible prochainement — reviens vite !</span>`;
+    qvAddBtn.textContent = 'Bientôt disponible';
+    qvAddBtn.disabled = true;
+  } else {
+    document.getElementById('qvSizes').innerHTML = qvProduct.oneSize
+      ? `<button class="sel" onclick="qvSelectedSize='Unique'">Taille unique</button>`
+      : SIZES.map(s=>`<button onclick="qvSelectSize(this,'${s}')">${s}</button>`).join('');
+    qvAddBtn.textContent = 'Ajouter au panier';
+    qvAddBtn.disabled = false;
+  }
   document.getElementById('qvOverlay').classList.add('active');
   document.body.style.overflow='hidden';
 }
 function qvSelectSize(btn,s){ document.querySelectorAll('#qvSizes button').forEach(b=>b.classList.remove('sel')); btn.classList.add('sel'); qvSelectedSize=s; }
 function closeQuickView(){ document.getElementById('qvOverlay').classList.remove('active'); document.body.style.overflow=''; }
 function addToCartFromQV(e){
+  if(qvProduct.comingSoon){ openToast('Ce produit sera bientôt disponible'); return; }
   if(!qvSelectedSize){ openToast('Sélectionnez une taille'); return; }
   addToCart(qvProduct, qvProduct.colors[0].name, qvSelectedSize, 1, e.target.closest('.qv-modal').querySelector('img'));
   closeQuickView();
@@ -833,8 +866,8 @@ function renderProductPage(){
   document.getElementById('ppCrumbName').textContent = p.name;
   document.getElementById('ppCategory').textContent = p.category;
   document.getElementById('ppName').textContent = p.name;
-  document.getElementById('ppRating').innerHTML = `★★★★★ <span style="color:#999;">${p.rating} · ${p.reviews} avis</span>`;
-  document.getElementById('ppPrice').textContent = p.price + ' €';
+  document.getElementById('ppRating').innerHTML = p.reviews ? `★★★★★ <span style="color:#999;">${p.rating} · ${p.reviews} avis</span>` : '';
+  document.getElementById('ppPrice').textContent = p.comingSoon ? 'Bientôt disponible' : p.price + ' €';
   document.getElementById('ppDesc').textContent = p.desc;
   document.getElementById('ppColorName').textContent = ppSelectedColor.name;
   document.getElementById('ppMainImg').src = p.img + '?q=80&w=1200&auto=format&fit=crop';
@@ -847,22 +880,38 @@ function renderProductPage(){
     `<span class="pp-color-swatch ${c.hex===ppSelectedColor.hex?'sel':''}" style="background:${c.hex};border-color:${c.hex==='#fff'?'#ddd':c.hex}" onclick="setPpColor('${c.hex}')"></span>`
   ).join('');
 
-  document.getElementById('ppSizes').innerHTML = p.oneSize
-    ? `<button class="sel" onclick="ppSelectedSize='Unique'; renderProductPage();">Taille unique</button>`
-    : SIZES.map(s=>`<button class="${ppSelectedSize===s?'sel':''}" onclick="setPpSize('${s}')">${s}</button>`).join('');
+  const sizeBlock = document.getElementById('ppSizeBlock');
+  const comingNote = document.getElementById('ppComingSoonNote');
+  const qtyAddBlock = document.getElementById('ppQtyAddBlock');
+  const addBtn = document.getElementById('ppAddBtn');
 
-  document.getElementById('ppQty').textContent = ppQty;
+  if(p.comingSoon){
+    sizeBlock.style.display = 'none';
+    comingNote.style.display = 'block';
+    document.getElementById('ppQty').textContent = 1;
+    addBtn.textContent = 'Bientôt disponible';
+    addBtn.disabled = true;
+  } else {
+    sizeBlock.style.display = 'block';
+    comingNote.style.display = 'none';
+    document.getElementById('ppSizes').innerHTML = p.oneSize
+      ? `<button class="sel" onclick="ppSelectedSize='Unique'; renderProductPage();">Taille unique</button>`
+      : SIZES.map(s=>`<button class="${ppSelectedSize===s?'sel':''}" onclick="setPpSize('${s}')">${s}</button>`).join('');
+    document.getElementById('ppQty').textContent = ppQty;
+    addBtn.textContent = 'Ajouter au panier';
+    addBtn.disabled = false;
+  }
 
   // reviews
-  document.getElementById('ppBigRating').textContent = p.rating;
-  document.getElementById('ppReviewCount').textContent = `Basé sur ${p.reviews} avis`;
-  document.getElementById('ppReviewsList').innerHTML = REVIEWS_POOL.map(r=>`
+  document.getElementById('ppBigRating').textContent = p.rating || '—';
+  document.getElementById('ppReviewCount').textContent = p.reviews ? `Basé sur ${p.reviews} avis` : "Pas encore d'avis";
+  document.getElementById('ppReviewsList').innerHTML = p.reviews ? REVIEWS_POOL.map(r=>`
     <div class="review-card">
       <div class="stars">★★★★★</div>
       <div class="name">${r.name}</div>
       <div class="txt">${r.txt}</div>
     </div>
-  `).join('');
+  `).join('') : '';
 
   // similar products
   const similar = PRODUCTS.filter(x=>x.category===p.category && x.id!==p.id).slice(0,3);
@@ -872,10 +921,11 @@ function renderProductPage(){
       <div class="prod-media">
         <div class="shadow-lift"></div>
         <img src="${sp.img}?q=80&w=700&auto=format&fit=crop" alt="${sp.name}">
+        ${sp.comingSoon ? '<span class="coll-badge" style="background:var(--gold);color:var(--white);">Bientôt</span>' : ''}
       </div>
       <div class="prod-info">
         <div class="name">${sp.name}</div>
-        <div class="price">${sp.price} €</div>
+        <div class="price">${sp.comingSoon ? 'Bientôt disponible' : sp.price + ' €'}</div>
       </div>
     </div>
   `).join('');
@@ -893,6 +943,7 @@ function toggleAcc(head){
   if(!isOpen){ item.classList.add('open'); body.style.maxHeight = body.scrollHeight+'px'; }
 }
 function addToCartFromPage(e){
+  if(currentProduct.comingSoon){ openToast('Ce produit sera bientôt disponible'); return; }
   if(!currentProduct.oneSize && !ppSelectedSize){ openToast('Sélectionnez une taille'); return; }
   const size = currentProduct.oneSize ? 'Unique' : ppSelectedSize;
   addToCart(currentProduct, ppSelectedColor.name, size, ppQty, document.getElementById('ppMainImg'));
@@ -1005,7 +1056,7 @@ function renderSearchResults(q){
   box.innerHTML = matches.length ? matches.map(p=>`
     <div class="search-result-item" onclick="toggleSearch(false); goToProduct('${p.id}')">
       <img src="${p.img}?q=80&w=150&auto=format&fit=crop">
-      <div><div class="n">${p.name}</div><div class="p">${p.category} · ${p.price} €</div></div>
+      <div><div class="n">${p.name}</div><div class="p">${p.category} · ${p.comingSoon ? 'Bientôt disponible' : p.price + ' €'}</div></div>
     </div>
   `).join('') : '<div style="text-align:center;color:#999;font-size:13px;padding:20px 0;">Aucun résultat</div>';
 }
