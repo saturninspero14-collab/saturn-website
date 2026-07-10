@@ -65,7 +65,7 @@
 
   /* ---------- Hero ---------- */
   .hero{height:100vh;min-height:640px;position:relative;display:flex;align-items:flex-end;background:var(--white);overflow:hidden;}
-  .hero-img{position:absolute;inset:0;width:100%;height:100%;background:url('URL_PHOTO_1') center 20%/cover no-repeat;transform:scale(1.08);filter:grayscale(6%);}
+  .hero-img{position:absolute;inset:0;width:100%;height:100%;background:url('https://i.ibb.co/JWQ696cS/Pull.png') center 20%/cover no-repeat;transform:scale(1.08);filter:grayscale(6%);}
   .hero-gradient{position:absolute;inset:0;background:linear-gradient(180deg, rgba(255,255,255,0) 40%, rgba(255,255,255,.94) 92%);}
   .hero-content{position:relative;z-index:2;width:100%;padding:0 48px 90px;display:flex;flex-direction:column;align-items:flex-start;gap:22px;}
   .hero-eyebrow{font-size:11px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);font-weight:500;opacity:0;animation:fadeUp 1.1s .3s var(--ease) forwards;}
@@ -421,29 +421,29 @@
     </div>
     <div class="coll-grid">
       <div class="coll-card reveal" onclick="filterByCategory('new')">
-        <img src="URL_PHOTO_1" alt="New Arrivals">
+        <img src="https://i.ibb.co/JWQ696cS/Pull.png" alt="New Arrivals">
         <span class="coll-badge">Nouveau</span>
         <div class="coll-label"><span class="name">New Arrivals</span><span class="sub">Découvrir →</span></div>
       </div>
       <div class="coll-card reveal" onclick="filterByCategory('Hoodies')">
-        <img src="URL_PHOTO_2" alt="Hoodies">
+        <img src="https://i.ibb.co/zhTT9Hf8/pull-sturn.png" alt="Hoodies">
         <div class="coll-label"><span class="name">Hoodies</span><span class="sub">Découvrir →</span></div>
       </div>
       <div class="coll-card reveal" onclick="filterByCategory('T-Shirts')">
-        <img src="URL_PHOTO_3" alt="T-Shirts">
+        <img src="https://i.ibb.co/Xk26L90v/tee-shirt-saturn.png" alt="T-Shirts">
         <div class="coll-label"><span class="name">T-Shirts</span><span class="sub">Découvrir →</span></div>
       </div>
       <div class="coll-card reveal" onclick="filterByCategory('Joggings')">
-        <img src="URL_PHOTO_JOGGING_1" alt="Joggings">
+        <img src="https://i.ibb.co/kgN4QGCM/tee-shirt.png" alt="Joggings">
         <span class="coll-badge" style="background:var(--gold);color:var(--white);">Bientôt</span>
         <div class="coll-label"><span class="name">Joggings</span><span class="sub">Découvrir →</span></div>
       </div>
       <div class="coll-card reveal" onclick="filterByCategory('Accessories')">
-        <img src="URL_PHOTO_6" alt="Accessories">
+        <img src="https://i.ibb.co/NnbLCD6T/t-shirt.png" alt="Accessories">
         <div class="coll-label"><span class="name">Accessories</span><span class="sub">Découvrir →</span></div>
       </div>
       <div class="coll-card reveal" onclick="filterByCategory('limited')">
-        <img src="URL_PHOTO_5" alt="Limited Drop">
+        <img src="https://i.ibb.co/Q35RgxYy/t-shirt-blanc.png" alt="Limited Drop">
         <span class="coll-badge" style="background:var(--gold);color:var(--white);">Limited</span>
         <div class="coll-label"><span class="name">Limited Drop</span><span class="sub">Découvrir →</span></div>
       </div>
@@ -479,15 +479,15 @@
   <section class="lookbook">
     <div class="look-strip">
       <div class="look-item reveal">
-        <img src="URL_PHOTO_1" alt="Lookbook 1">
+        <img src="https://i.ibb.co/JWQ696cS/Pull.png" alt="Lookbook 1">
         <span class="look-caption">Look 01 — Eclipse</span>
       </div>
       <div class="look-item reveal">
-        <img src="URL_PHOTO_5" alt="Lookbook 2">
+        <img src="https://i.ibb.co/Q35RgxYy/t-shirt-blanc.png" alt="Lookbook 2">
         <span class="look-caption">Look 02 — Halo</span>
       </div>
       <div class="look-item reveal">
-        <img src="URL_PHOTO_6" alt="Lookbook 3">
+        <img src="https://i.ibb.co/NnbLCD6T/t-shirt.png" alt="Lookbook 3">
         <span class="look-caption">Look 03 — Orbit</span>
       </div>
     </div>
@@ -681,29 +681,18 @@
 <div class="toast" id="toast"></div>
 
 <script>
-/* =================================================================
-   ZONE IMAGES — colle ici les liens (ImgBB / Chariow / Cloudinary)
-   de tes 6 photos SATURN. Repère chaque URL_PHOTO_x dans ce fichier
-   (Ctrl+F) et remplace par ton vrai lien.
-   Photo 1 = Hoodie noir (3 vues)   Photo 4 = T-shirt blanc flatlay
-   Photo 2 = Hoodie gris            Photo 5 = T-shirt blanc coupe US
-   Photo 3 = T-shirt noir porté     Photo 6 = T-shirt noir coupe US
-   Les joggings et la casquette n'ont pas encore de photo -> laissés
-   en "Bientôt disponible" jusqu'à ce que tu envoies les visuels.
-   ================================================================= */
-
 /* ================= PRODUCT DATA ================= */
 const PRODUCTS = [
-  {id:'hoodie-noir', name:'Hoodie SATURN Noir', category:'Hoodies', tags:['new'], price:145, img:'URL_PHOTO_1', colors:[{hex:'#000',name:'Noir'}], rating:4.9, reviews:31, desc:"Hoodie oversize en molleton épais, logo SATURN floqué sur la poitrine. Coupe ample, capuche doublée, finitions soignées."},
-  {id:'hoodie-gris', name:'Hoodie SATURN Gris', category:'Hoodies', tags:['new'], price:145, img:'URL_PHOTO_2', colors:[{hex:'#c9c9c9',name:'Gris chiné'}], rating:4.7, reviews:18, desc:"Hoodie oversize gris chiné, logo SATURN imprimé ton sur ton. Coupe ample, idéal toutes saisons."},
-  {id:'tee-noir', name:'T-Shirt SATURN Noir', category:'T-Shirts', tags:['new'], price:85, img:'URL_PHOTO_3', colors:[{hex:'#000',name:'Noir'}], rating:4.8, reviews:27, desc:"T-shirt noir 100% coton, logo SATURN imprimé blanc en poitrine. Coupe droite classique."},
-  {id:'tee-blanc', name:'T-Shirt SATURN Blanc', category:'T-Shirts', tags:[], price:85, img:'URL_PHOTO_4', colors:[{hex:'#fff',name:'Blanc'}], rating:4.5, reviews:9, desc:"T-shirt blanc épuré, logo SATURN imprimé noir en poitrine, finitions renforcées."},
-  {id:'tee-blanc-us', name:'T-Shirt SATURN Blanc — Coupe Américaine', category:'T-Shirts', tags:['new'], price:90, img:'URL_PHOTO_5', colors:[{hex:'#fff',name:'Blanc'}], rating:4.6, reviews:5, desc:"T-shirt oversize à coupe américaine — épaules tombantes, manches larges — dans un tissu épais premium."},
-  {id:'tee-noir-us', name:'T-Shirt SATURN Noir — Coupe Américaine', category:'T-Shirts', tags:['new'], price:90, img:'URL_PHOTO_6', colors:[{hex:'#000',name:'Noir'}], rating:4.7, reviews:4, desc:"T-shirt oversize à coupe américaine — épaules tombantes, manches larges — dans un tissu épais premium."},
-  {id:'jogging-anthracite', name:'Jogging SATURN Anthracite', category:'Joggings', tags:['new'], price:120, img:'URL_PHOTO_JOGGING_1', colors:[{hex:'#1a1a1a',name:'Anthracite'}], rating:0, reviews:0, desc:"Jogging confortable en molleton épais, taille élastiquée, poches zippées discrètes.", comingSoon:true},
-  {id:'jogging-noir', name:'Jogging SATURN Noir', category:'Joggings', tags:[], price:120, img:'URL_PHOTO_JOGGING_2', colors:[{hex:'#000',name:'Noir'}], rating:0, reviews:0, desc:"Jogging noir uni, coupe droite, ceinture ajustable ton sur ton.", comingSoon:true},
-  {id:'cap-rings', name:'Casquette Rings', category:'Accessories', tags:[], price:95, img:'URL_PHOTO_CASQUETTE', colors:[{hex:'#000',name:'Noir'}], rating:0, reviews:0, desc:"Casquette structurée 6 panneaux, broderie ton sur ton, sangle ajustable en cuir.", oneSize:true, comingSoon:true},
-  {id:'bag-orbit', name:'Sac Orbit', category:'Accessories', tags:['limited'], price:135, img:'URL_PHOTO_SAC', colors:[{hex:'#000',name:'Noir'}], rating:4.9, reviews:8, desc:"Sac bandoulière en toile robuste, quincaillerie or discret, édition limitée.", oneSize:true},
+  {id:'hoodie-noir', name:'Hoodie SATURN Noir', category:'Hoodies', tags:['new'], price:145, img:'https://i.ibb.co/JWQ696cS/Pull.png', colors:[{hex:'#000',name:'Noir'}], rating:4.9, reviews:31, desc:"Hoodie oversize en molleton épais, logo SATURN floqué sur la poitrine. Coupe ample, capuche doublée, finitions soignées."},
+  {id:'hoodie-gris', name:'Hoodie SATURN Gris', category:'Hoodies', tags:['new'], price:145, img:'https://i.ibb.co/zhTT9Hf8/pull-sturn.png', colors:[{hex:'#c9c9c9',name:'Gris chiné'}], rating:4.7, reviews:18, desc:"Hoodie oversize gris chiné, logo SATURN imprimé ton sur ton. Coupe ample, idéal toutes saisons."},
+  {id:'tee-noir', name:'T-Shirt SATURN Noir', category:'T-Shirts', tags:['new'], price:85, img:'https://i.ibb.co/Xk26L90v/tee-shirt-saturn.png', colors:[{hex:'#000',name:'Noir'}], rating:4.8, reviews:27, desc:"T-shirt noir 100% coton, logo SATURN imprimé blanc en poitrine. Coupe droite classique."},
+  {id:'tee-blanc', name:'T-Shirt SATURN Blanc', category:'T-Shirts', tags:[], price:85, img:'https://i.ibb.co/kgN4QGCM/tee-shirt.png', colors:[{hex:'#fff',name:'Blanc'}], rating:4.5, reviews:9, desc:"T-shirt blanc épuré, logo SATURN imprimé noir en poitrine, finitions renforcées."},
+  {id:'tee-blanc-us', name:'T-Shirt SATURN Blanc — Coupe Américaine', category:'T-Shirts', tags:['new'], price:90, img:'https://i.ibb.co/Q35RgxYy/t-shirt-blanc.png', colors:[{hex:'#fff',name:'Blanc'}], rating:4.6, reviews:5, desc:"T-shirt oversize à coupe américaine — épaules tombantes, manches larges — dans un tissu épais premium."},
+  {id:'tee-noir-us', name:'T-Shirt SATURN Noir — Coupe Américaine', category:'T-Shirts', tags:['new'], price:90, img:'https://i.ibb.co/NnbLCD6T/t-shirt.png', colors:[{hex:'#000',name:'Noir'}], rating:4.7, reviews:4, desc:"T-shirt oversize à coupe américaine — épaules tombantes, manches larges — dans un tissu épais premium."},
+  {id:'jogging-anthracite', name:'Jogging SATURN Anthracite', category:'Joggings', tags:['new'], price:120, img:'https://i.ibb.co/kgN4QGCM/tee-shirt.png', colors:[{hex:'#1a1a1a',name:'Anthracite'}], rating:0, reviews:0, desc:"Jogging confortable en molleton épais, taille élastiquée, poches zippées discrètes.", comingSoon:true},
+  {id:'jogging-noir', name:'Jogging SATURN Noir', category:'Joggings', tags:[], price:120, img:'https://i.ibb.co/kgN4QGCM/tee-shirt.png', colors:[{hex:'#000',name:'Noir'}], rating:0, reviews:0, desc:"Jogging noir uni, coupe droite, ceinture ajustable ton sur ton.", comingSoon:true},
+  {id:'cap-rings', name:'Casquette Rings', category:'Accessories', tags:[], price:95, img:'https://i.ibb.co/NnbLCD6T/t-shirt.png', colors:[{hex:'#000',name:'Noir'}], rating:0, reviews:0, desc:"Casquette structurée 6 panneaux, broderie ton sur ton, sangle ajustable en cuir.", oneSize:true, comingSoon:true},
+  {id:'bag-orbit', name:'Sac Orbit', category:'Accessories', tags:['limited'], price:135, img:'https://i.ibb.co/NnbLCD6T/t-shirt.png', colors:[{hex:'#000',name:'Noir'}], rating:4.9, reviews:8, desc:"Sac bandoulière en toile robuste, quincaillerie or discret, édition limitée.", oneSize:true, comingSoon:true},
 ];
 const SIZES = ['XS','S','M','L','XL'];
 const ALL_COLORS = [...new Map(PRODUCTS.flatMap(p=>p.colors).map(c=>[c.hex,c])).values()];
@@ -779,7 +768,7 @@ function renderGrid(){
     <div class="prod-card reveal in" onclick="goToProduct('${p.id}')">
       <div class="prod-media">
         <div class="shadow-lift"></div>
-        <img src="${p.img}?q=80&w=800&auto=format&fit=crop" alt="${p.name}" loading="lazy">
+        <img src="${p.img}" alt="${p.name}" loading="lazy">
         ${p.comingSoon ? '<span class="coll-badge" style="background:var(--gold);color:var(--white);">Bientôt disponible</span>' : ''}
         <button class="wishlist-btn" onclick="event.stopPropagation(); toggleWishlist(this)" aria-label="Wishlist">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="1.4"><path d="M12 21s-7.5-4.6-10-9.3C0.3 8 2 4 6 4c2 0 3.5 1 6 3.4C14.5 5 16 4 18 4c4 0 5.7 4 4 7.7C19.5 16.4 12 21 12 21z"/></svg>
@@ -817,7 +806,7 @@ observeReveals();
 function openQuickView(id){
   qvProduct = PRODUCTS.find(x=>x.id===id);
   qvSelectedSize = null;
-  document.getElementById('qvImage').src = qvProduct.img + '?q=80&w=1000&auto=format&fit=crop';
+  document.getElementById('qvImage').src = qvProduct.img;
   document.getElementById('qvName').textContent = qvProduct.name;
   document.getElementById('qvPrice').textContent = qvProduct.comingSoon ? 'Bientôt disponible' : qvProduct.price + ' €';
   document.getElementById('qvDesc').textContent = qvProduct.desc;
@@ -872,10 +861,10 @@ function renderProductPage(){
   document.getElementById('ppPrice').textContent = p.comingSoon ? 'Bientôt disponible' : p.price + ' €';
   document.getElementById('ppDesc').textContent = p.desc;
   document.getElementById('ppColorName').textContent = ppSelectedColor.name;
-  document.getElementById('ppMainImg').src = p.img + '?q=80&w=1200&auto=format&fit=crop';
+  document.getElementById('ppMainImg').src = p.img;
 
   document.getElementById('ppThumbs').innerHTML = [1,2,3].map((n,i)=>
-    `<img src="${p.img}?q=80&w=300&auto=format&fit=crop&sig=${n}" class="${i===0?'active':''}" onclick="setThumb(this)">`
+    `<img src="${p.img}" class="${i===0?'active':''}" onclick="setThumb(this)">`
   ).join('');
 
   document.getElementById('ppColors').innerHTML = p.colors.map(c=>
@@ -884,7 +873,6 @@ function renderProductPage(){
 
   const sizeBlock = document.getElementById('ppSizeBlock');
   const comingNote = document.getElementById('ppComingSoonNote');
-  const qtyAddBlock = document.getElementById('ppQtyAddBlock');
   const addBtn = document.getElementById('ppAddBtn');
 
   if(p.comingSoon){
@@ -922,7 +910,7 @@ function renderProductPage(){
     <div class="prod-card" onclick="goToProduct('${sp.id}')">
       <div class="prod-media">
         <div class="shadow-lift"></div>
-        <img src="${sp.img}?q=80&w=700&auto=format&fit=crop" alt="${sp.name}">
+        <img src="${sp.img}" alt="${sp.name}">
         ${sp.comingSoon ? '<span class="coll-badge" style="background:var(--gold);color:var(--white);">Bientôt</span>' : ''}
       </div>
       <div class="prod-info">
@@ -1011,7 +999,7 @@ function renderCart(){
   }
   itemsBox.innerHTML = cart.map((c,i)=>`
     <div class="cart-item">
-      <img src="${c.img}?q=80&w=200&auto=format&fit=crop" alt="${c.name}">
+      <img src="${c.img}" alt="${c.name}">
       <div class="cart-item-info">
         <div class="n">${c.name}</div>
         <div class="meta">${c.color} · Taille ${c.size}</div>
@@ -1057,7 +1045,7 @@ function renderSearchResults(q){
   const matches = PRODUCTS.filter(p=>p.name.toLowerCase().includes(q.toLowerCase()) || p.category.toLowerCase().includes(q.toLowerCase()));
   box.innerHTML = matches.length ? matches.map(p=>`
     <div class="search-result-item" onclick="toggleSearch(false); goToProduct('${p.id}')">
-      <img src="${p.img}?q=80&w=150&auto=format&fit=crop">
+      <img src="${p.img}">
       <div><div class="n">${p.name}</div><div class="p">${p.category} · ${p.comingSoon ? 'Bientôt disponible' : p.price + ' €'}</div></div>
     </div>
   `).join('') : '<div style="text-align:center;color:#999;font-size:13px;padding:20px 0;">Aucun résultat</div>';
