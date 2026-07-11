@@ -135,6 +135,7 @@
   }
   .chip:hover{border-color:var(--black);color:var(--black);}
   .chip.active{background:var(--black);color:var(--white);border-color:var(--black);}
+  .chip.gold-active{background:var(--gold);color:var(--white);border-color:var(--gold);}
   .color-chip{width:20px;height:20px;border-radius:50%;border:1px solid #ddd;cursor:pointer;transition:all .25s var(--ease);position:relative;}
   .color-chip.active::after{content:'';position:absolute;inset:-4px;border:1px solid var(--gold);border-radius:50%;}
   .sort-select{
@@ -142,6 +143,7 @@
     font-family:inherit;cursor:pointer;
   }
   .no-results{padding:60px 0;text-align:center;color:#999;font-size:13px;display:none;}
+  #subcatChips:empty{display:none;}
 
   /* ---------- Products ---------- */
   .prod-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:40px 28px;}
@@ -489,6 +491,7 @@
       <div class="filter-group" id="categoryChips">
         <span class="filter-label">Catégorie</span>
       </div>
+      <div class="filter-group" id="subcatChips"></div>
       <div class="filter-group" id="colorChips">
         <span class="filter-label">Couleur</span>
       </div>
@@ -732,12 +735,14 @@ const PRODUCTS = [
   {id:'tee-noir-us', name:'T-Shirt SATURN Noir — Coupe Américaine', category:'T-Shirts', tags:['new'], price:90, img:'https://i.ibb.co/Q3Mpgtd3/t-shirt-noir-am-ricain.png', colors:[{hex:'#000',name:'Noir'}], rating:4.7, reviews:4, desc:"T-shirt oversize à coupe américaine — épaules tombantes, manches larges — dans un tissu épais premium."},
   {id:'jogging-anthracite', name:'Jogging SATURN Anthracite', category:'Joggings', tags:['new'], price:120, img:'https://i.ibb.co/kgN4QGCM/tee-shirt.png', colors:[{hex:'#1a1a1a',name:'Anthracite'}], rating:0, reviews:0, desc:"Jogging confortable en molleton épais, taille élastiquée, poches zippées discrètes.", comingSoon:true},
   {id:'jogging-noir', name:'Jogging SATURN Noir', category:'Joggings', tags:[], price:120, img:'https://i.ibb.co/kgN4QGCM/tee-shirt.png', colors:[{hex:'#000',name:'Noir'}], rating:0, reviews:0, desc:"Jogging noir uni, coupe droite, ceinture ajustable ton sur ton.", comingSoon:true},
-  {id:'cap-rings', name:'Casquette Rings', category:'Accessories', tags:[], price:95, img:'https://i.ibb.co/NnbLCD6T/t-shirt.png', colors:[{hex:'#000',name:'Noir'}], rating:0, reviews:0, desc:"Casquette structurée 6 panneaux, broderie ton sur ton, sangle ajustable en cuir.", oneSize:true, comingSoon:true},
-  {id:'bag-orbit', name:'Sac Orbit', category:'Accessories', tags:['limited'], price:135, img:'https://i.ibb.co/NnbLCD6T/t-shirt.png', colors:[{hex:'#000',name:'Noir'}], rating:4.9, reviews:8, desc:"Sac bandoulière en toile robuste, quincaillerie or discret, édition limitée.", oneSize:true, comingSoon:true},
+  {id:'cap-rings', name:'Casquette Rings', category:'Accessories', subcategory:'Casquettes', tags:[], price:95, img:'https://i.ibb.co/NnbLCD6T/t-shirt.png', colors:[{hex:'#000',name:'Noir'}], rating:0, reviews:0, desc:"Casquette structurée 6 panneaux, broderie ton sur ton, sangle ajustable en cuir.", oneSize:true, comingSoon:true},
+  {id:'cap-eclipse', name:'Casquette Eclipse', category:'Accessories', subcategory:'Casquettes', tags:[], price:95, img:'https://i.ibb.co/NnbLCD6T/t-shirt.png', colors:[{hex:'#c9c9c9',name:'Gris chiné'}], rating:0, reviews:0, desc:"Casquette structurée, broderie tissée, sangle ajustable.", oneSize:true, comingSoon:true},
+{id:'chaussette-noire', name:'Chaussettes SATURN Noires', category:'Accessories', subcategory:'Chaussettes', tags:[], price:15, img:'https://i.ibb.co/Xk26L90v/tee-shirt-saturn.png', colors:[{hex:'#000',name:'Noir'}], rating:0, reviews:0, desc:"Chaussettes en coton peigné, logo SATURN tissé sur le côté.", oneSize:true, comingSoon:true},
+{id:'chaussette-blanche', name:'Chaussettes SATURN Blanches', category:'Accessories', subcategory:'Chaussettes', tags:[], price:15, img:'https://i.ibb.co/Q35RgxYy/t-shirt-blanc.png', colors:[{hex:'#fff',name:'Blanc'}], rating:0, reviews:0, desc:"Chaussettes en coton peigné, logo SATURN tissé sur le côté.", oneSize:true, comingSoon:true}, , price:135, img:'https://i.ibb.co/NnbLCD6T/t-shirt.png', colors:[{hex:'#000',name:'Noir'}], rating:4.9, reviews:8, desc:"Sac bandoulière en toile robuste, quincaillerie or discret, édition limitée.", oneSize:true, comingSoon:true},
 ];
 const SIZES = ['XS','S','M','L','XL'];
 const ALL_COLORS = [...new Map(PRODUCTS.flatMap(p=>p.colors).map(c=>[c.hex,c])).values()];
-const CATEGORIES = ['Hoodies','T-Shirts','Joggings','Accessories'];
+const SUBCATEGORIES = { 'Accessories': ['Casquettes','Chaussettes','Sacs'] };
 
 const REVIEWS_POOL = [
   {name:'Jean-Marc A.', txt:"Qualité au-dessus de mes attentes, la matière est épaisse et la coupe tombe parfaitement. Livraison rapide jusqu'à Cotonou."},
@@ -745,7 +750,7 @@ const REVIEWS_POOL = [
   {name:'Serge D.', txt:"Premier achat SATURN et je suis conquis. Les finitions sont soignées, on sent une vraie attention aux détails."},
 ];
 
-let state = { category:'all', colors:new Set(), sizes:new Set(), sort:'default' };
+let state = { category:'all', subcategory:null, colors:new Set(), sizes:new Set(), sort:'default' };
 let cart = [];
 let currentProduct = null;
 let ppSelectedColor = null;
@@ -768,8 +773,14 @@ function buildFilterChips(){
   const sizeBox = document.getElementById('sizeChips');
   sizeBox.innerHTML = '<span class="filter-label">Taille</span>' +
     SIZES.map(s=>`<button class="chip ${state.sizes.has(s)?'active':''}" style="padding:6px 12px;" onclick="toggleSize('${s}')">${s}</button>`).join('');
+
+  const subcatBox = document.getElementById('subcatChips');
+  const subs = SUBCATEGORIES[state.category];
+  subcatBox.innerHTML = subs ? '<span class="filter-label">Sous-catégorie</span>' +
+    subs.map(s=>`<button class="chip ${state.subcategory===s?'gold-active':''}" onclick="setSubcategory('${s}')">${s}</button>`).join('') : '';
 }
-function setCategory(c){ state.category = c; buildFilterChips(); renderGrid(); }
+function setCategory(c){ state.category = c; state.subcategory = null; buildFilterChips(); renderGrid(); }
+function setSubcategory(s){ state.subcategory = (state.subcategory===s ? null : s); buildFilterChips(); renderGrid(); }
 function toggleColor(hex){ state.colors.has(hex) ? state.colors.delete(hex) : state.colors.add(hex); buildFilterChips(); renderGrid(); }
 function toggleSize(s){ state.sizes.has(s) ? state.sizes.delete(s) : state.sizes.add(s); buildFilterChips(); renderGrid(); }
 function resetFilters(){ state = {category:'all',colors:new Set(),sizes:new Set(),sort:'default'}; document.getElementById('sortSelect').value='default'; buildFilterChips(); renderGrid(); }
@@ -787,7 +798,7 @@ function filterByCategory(tagOrCat){
 
 function getFilteredProducts(){
   let list = PRODUCTS.filter(p=>{
-    if(state.category!=='all' && p.category!==state.category) return false;
+    if(state.subcategory && p.subcategory!==state.subcategory) return false;
     if(state._tag && !p.tags.includes(state._tag)) return false;
     if(state.colors.size && !p.colors.some(c=>state.colors.has(c.hex))) return false;
     if(state.sizes.size && p.oneSize) return false;
