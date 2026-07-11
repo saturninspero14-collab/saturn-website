@@ -810,6 +810,7 @@ function filterByCategory(tagOrCat){
 
 function getFilteredProducts(){
   let list = PRODUCTS.filter(p=>{
+    if(state.category!=='all' && p.category!==state.category) return false;
     if(state.subcategory && p.subcategory!==state.subcategory) return false;
     if(state._tag && !p.tags.includes(state._tag)) return false;
     if(state.colors.size && !p.colors.some(c=>state.colors.has(c.hex))) return false;
