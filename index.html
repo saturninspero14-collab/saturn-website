@@ -479,8 +479,8 @@
         <span class="coll-badge" style="background:var(--gold);color:var(--white);">Limited</span>
         <div class="coll-label"><span class="name">Limited Drop</span><span class="sub">Découvrir →</span></div>
       </div>
-      <div class="coll-card reveal" onclick="filterByCategory('Pochettes iPhone et iPad')">
-        <img src="https://i.ibb.co/NnbLCD6T/t-shirt.png" alt="Pochettes iPhone et iPad">
+      <div class="coll-card reveal" onclick="filterByCategory('Pochettes')">
+        <img src="https://i.ibb.co/NnbLCD6T/t-shirt.png" alt="Pochettes">
         <span class="coll-badge" style="background:var(--gold);color:var(--white);">Bientôt</span>
         <div class="coll-label"><span class="name">Pochettes</span><span class="sub">Découvrir →</span></div>
       </div>
@@ -563,7 +563,7 @@
         <a onclick="filterByCategory('Hoodies')" href="#new-arrivals">Hoodies</a>
         <a onclick="filterByCategory('T-Shirts')" href="#new-arrivals">T-Shirts</a>
         <a onclick="filterByCategory('Joggings')" href="#new-arrivals">Joggings</a>
-        <a onclick="filterByCategory('Pochettes iPhone et iPad')" href="#new-arrivals">Pochettes</a>
+        <a onclick="filterByCategory('Pochettes')" href="#new-arrivals">Pochettes</a>
         <a onclick="filterByCategory('limited')" href="#new-arrivals">Limited Drop</a>
       </div>
       <div class="footer-col">
@@ -746,14 +746,14 @@ const PRODUCTS = [
 {id:'chaussette-noire', name:'Chaussettes SATURN Noires', category:'Accessories', subcategory:'Chaussettes', tags:[], price:15, img:'https://i.ibb.co/Xk26L90v/tee-shirt-saturn.png', colors:[{hex:'#000',name:'Noir'}], rating:0, reviews:0, desc:"Chaussettes en coton peigné, logo SATURN tissé sur le côté.", oneSize:true, comingSoon:true},
 {id:'chaussette-blanche', name:'Chaussettes SATURN Blanches', category:'Accessories', subcategory:'Chaussettes', tags:[], price:15, img:'https://i.ibb.co/Q35RgxYy/t-shirt-blanc.png', colors:[{hex:'#fff',name:'Blanc'}], rating:0, reviews:0, desc:"Chaussettes en coton peigne, logo SATURN tisse sur le cote.", oneSize:true, comingSoon:true},
   {id:'bag-orbit', name:'Sac Orbit', category:'Accessories', subcategory:'Sacs', tags:['limited'], price:135, img:'https://i.ibb.co/NnbLCD6T/t-shirt.png', colors:[{hex:'#000',name:'Noir'}], rating:4.9, reviews:8, desc:"Sac bandoulière en toile robuste, quincaillerie or discret, édition limitée.", oneSize:true, comingSoon:true},
-  {id:'pochette-iphone-noir', name:'Pochette SATURN iPhone Noire', category:'Pochettes iPhone et iPad', tags:['new'], price:25, img:'https://i.ibb.co/NnbLCD6T/t-shirt.png', colors:[{hex:'#000',name:'Noir'}], rating:0, reviews:0, desc:"Pochette de protection pour iPhone, logo SATURN grave, finition mate.", oneSize:true, comingSoon:true},
-  {id:'pochette-iphone-blanc', name:'Pochette SATURN iPhone Blanche', category:'Pochettes iPhone et iPad', tags:['new'], price:25, img:'https://i.ibb.co/Q35RgxYy/t-shirt-blanc.png', colors:[{hex:'#fff',name:'Blanc'}], rating:0, reviews:0, desc:"Pochette de protection pour iPhone, logo SATURN grave, finition mate.", oneSize:true, comingSoon:true},
-  {id:'pochette-ipad-noir', name:'Pochette SATURN iPad Noire', category:'Pochettes iPhone et iPad', tags:[], price:35, img:'https://i.ibb.co/NnbLCD6T/t-shirt.png', colors:[{hex:'#000',name:'Noir'}], rating:0, reviews:0, desc:"Pochette de protection pour iPad, interieur double microfibre, logo SATURN grave.", oneSize:true, comingSoon:true},
-  {id:'pochette-ipad-gris', name:'Pochette SATURN iPad Gris', category:'Pochettes iPhone et iPad', tags:[], price:35, img:'https://i.ibb.co/zhTT9Hf8/pull-sturn.png', colors:[{hex:'#c9c9c9',name:'Gris chiné'}], rating:0, reviews:0, desc:"Pochette de protection pour iPad, interieur double microfibre, logo SATURN grave.", oneSize:true, comingSoon:true},
+  {id:'pochette-iphone-noir', name:'Pochette SATURN iPhone Noire', category:'Pochettes', tags:['new'], price:25, img:'https://i.ibb.co/NnbLCD6T/t-shirt.png', colors:[{hex:'#000',name:'Noir'}], rating:0, reviews:0, desc:"Pochette de protection pour iPhone, logo SATURN grave, finition mate.", oneSize:true, comingSoon:true},
+  {id:'pochette-iphone-blanc', name:'Pochette SATURN iPhone Blanche', category:'Pochettes', tags:['new'], price:25, img:'https://i.ibb.co/Q35RgxYy/t-shirt-blanc.png', colors:[{hex:'#fff',name:'Blanc'}], rating:0, reviews:0, desc:"Pochette de protection pour iPhone, logo SATURN grave, finition mate.", oneSize:true, comingSoon:true},
+  {id:'pochette-ipad-noir', name:'Pochette SATURN iPad Noire', category:'Pochettes', tags:[], price:35, img:'https://i.ibb.co/NnbLCD6T/t-shirt.png', colors:[{hex:'#000',name:'Noir'}], rating:0, reviews:0, desc:"Pochette de protection pour iPad, interieur double microfibre, logo SATURN grave.", oneSize:true, comingSoon:true},
+  {id:'pochette-ipad-gris', name:'Pochette SATURN iPad Gris', category:'Pochettes', tags:[], price:35, img:'https://i.ibb.co/zhTT9Hf8/pull-sturn.png', colors:[{hex:'#c9c9c9',name:'Gris chiné'}], rating:0, reviews:0, desc:"Pochette de protection pour iPad, interieur double microfibre, logo SATURN grave.", oneSize:true, comingSoon:true},
 ];
 const SIZES = ['XS','S','M','L','XL'];
 const ALL_COLORS = [...new Map(PRODUCTS.flatMap(p=>p.colors).map(c=>[c.hex,c])).values()];
-const CATEGORIES = ['Hoodies','T-Shirts','Joggings','Accessories','Pochettes iPhone et iPad'];
+const CATEGORIES = ['Hoodies','T-Shirts','Joggings','Accessories','Pochettes'];
 const SUBCATEGORIES = { 'Accessories': ['Casquettes','Chaussettes','Sacs'] };
 
 const REVIEWS_POOL = [
