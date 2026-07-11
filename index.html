@@ -1010,7 +1010,7 @@ function addToCart(product, colorName, size, qty, sourceImgEl){
   if(existing){ existing.qty += qty; } else {
     cart.push({id:product.id, name:product.name, price:product.price, img:product.img, color:colorName, size:size, qty:qty});
   }
-  flyToCart(sourceImgEl);
+
   renderCart();
   openToast(`Ajouté au panier — ${product.name}`);
   const badge = document.getElementById('cartCount');
