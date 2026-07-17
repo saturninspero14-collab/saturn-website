@@ -230,6 +230,41 @@
   .overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:2000;opacity:0;pointer-events:none;transition:opacity .4s var(--ease);display:flex;align-items:center;justify-content:center;}
   .overlay.active{opacity:1;pointer-events:auto;}
 
+  .auth-modal{background:var(--white);width:min(540px,94vw);max-height:92vh;overflow:auto;padding:36px;position:relative;box-shadow:0 35px 80px rgba(0,0,0,.18);}
+  .auth-header h2{font-size:24px;font-weight:300;margin-bottom:10px;}
+  .auth-subtitle{font-size:11px;color:#777;letter-spacing:.3px;margin-bottom:20px;}
+  .auth-steps-indicator{display:flex;gap:6px;margin-bottom:24px;}
+  .auth-step-indicator-dot{width:10px;height:10px;background:#ddd;border-radius:50%;}
+  .auth-step-indicator-dot.active{background:var(--black);}
+  .auth-step{display:block;}
+  .auth-step.hidden{display:none;}
+  .auth-fields{display:flex;flex-direction:column;gap:18px;}
+  .auth-row{display:flex;gap:16px;}
+  .auth-field{display:flex;flex-direction:column;gap:8px;flex:1;}
+  .auth-field label{font-size:12px;letter-spacing:.9px;text-transform:uppercase;color:#777;}
+  .auth-field input,
+  .auth-field select{border:1px solid #ddd;padding:12px 14px;font-size:14px;border-radius:6px;font-family:inherit;}
+  .auth-field input:focus,
+  .auth-field select:focus{outline:none;border-color:var(--black);}
+  .auth-btn{width:100%;background:var(--black);color:var(--white);padding:14px 16px;font-size:13px;letter-spacing:1.8px;text-transform:uppercase;border-radius:6px;cursor:pointer;transition:opacity .3s;}
+  .auth-btn:hover{opacity:.86;}
+  .auth-password-check{display:grid;grid-template-columns:1fr 1fr;gap:10px;font-size:12px;color:#777;margin-top:-6px;}
+  .auth-password-check div{display:flex;align-items:center;gap:8px;}
+  .auth-password-check .invalid::before{content:'•';color:#bbb;}
+  .auth-password-check .valid{color:#000;}
+  .auth-password-check .valid::before{content:'•';color:var(--gold);}
+  .auth-note{font-size:12px;color:#999;line-height:1.6;margin-top:14px;}
+  .auth-account-card{background:var(--gray-light);padding:20px;border-radius:10px;display:flex;flex-direction:column;gap:14px;}
+  .auth-account-line{display:flex;justify-content:space-between;gap:14px;font-size:13px;}
+  .auth-account-line strong{color:#333;}
+  .auth-step-email{gap:20px;}
+  .auth-code-wrap{display:flex;gap:12px;align-items:flex-end;}
+  .auth-code-wrap input{flex:1;}
+  .auth-code-wrap button{flex-shrink:0;white-space:nowrap;}
+  .auth-actions{margin-top:18px;}
+  .auth-actions .auth-btn{width:100%;}
+  .qv-close{position:absolute;top:18px;right:18px;font-size:24px;line-height:1;cursor:pointer;background:none;border:none;color:var(--black);}
+
   /* ---------- Quick view modal ---------- */
   .qv-modal{background:var(--white);width:min(920px,92vw);max-height:88vh;overflow:auto;display:grid;grid-template-columns:1fr 1fr;transform:translateY(24px);transition:transform .5s var(--ease);}
   .overlay.active .qv-modal{transform:translateY(0);}
@@ -452,7 +487,7 @@
     <button aria-label="Recherche" onclick="toggleSearch(true)">
       <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
     </button>
-    <button aria-label="Compte">
+    <button aria-label="Compte" onclick="openAccount()">
       <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg>
     </button>
     <button aria-label="Panier" onclick="openCart()">
@@ -711,6 +746,122 @@
       <div class="qv-sizes" id="qvSizes"></div>
       <button class="qv-add" id="qvAddBtn" onclick="addToCartFromQV(event)">Ajouter au panier</button>
       <a class="size-guide-link" onclick="openSizeGuide()">Guide des tailles</a>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="authOverlay" onclick="if(event.target===this) closeAuth()">
+  <div class="auth-modal">
+    <button class="qv-close" onclick="closeAuth()">×</button>
+    <div class="auth-header">
+      <h2 id="authTitle">Connexion</h2>
+      <p class="auth-subtitle">Démo / maquette sans vraie sécurité — données stockées localement.</p>
+      <div class="auth-steps-indicator" id="authStepIndicator"></div>
+    </div>
+    <div id="authStepEmail" class="auth-step">
+      <div class="auth-fields">
+        <div class="auth-field">
+          <label for="authEmail">E-mail</label>
+          <input id="authEmail" type="email" placeholder="votre@email.com">
+        </div>
+      </div>
+      <div class="auth-actions">
+        <button class="auth-btn" onclick="handleEmailContinue()">Continuer</button>
+      </div>
+    </div>
+    <div id="authStepSignUp" class="auth-step hidden">
+      <div class="auth-fields">
+        <div class="auth-row">
+          <div class="auth-field">
+            <label for="authGender">Civilité</label>
+            <select id="authGender">
+              <option value="Monsieur">Monsieur</option>
+              <option value="Madame">Madame</option>
+              <option value="Autre">Autre</option>
+            </select>
+          </div>
+          <div class="auth-field">
+            <label for="authFirstName">Prénom</label>
+            <input id="authFirstName" type="text" placeholder="Prénom">
+          </div>
+        </div>
+        <div class="auth-row">
+          <div class="auth-field">
+            <label for="authLastName">Nom</label>
+            <input id="authLastName" type="text" placeholder="Nom">
+          </div>
+          <div class="auth-field">
+            <label for="authPhone">Indicatif + numéro</label>
+            <input id="authPhone" type="tel" placeholder="+229 1234 5678">
+          </div>
+        </div>
+        <div class="auth-row">
+          <div class="auth-field">
+            <label>Date de naissance</label>
+            <div class="auth-row">
+              <input id="authBirthDay" type="number" min="1" max="31" placeholder="JJ">
+              <input id="authBirthMonth" type="number" min="1" max="12" placeholder="MM">
+              <input id="authBirthYear" type="number" min="1900" max="2026" placeholder="AAAA">
+            </div>
+          </div>
+          <div class="auth-field auth-code-wrap">
+            <div style="flex:1;display:flex;flex-direction:column;gap:8px;">
+              <label for="authVerifyCode">Code de vérification</label>
+              <input id="authVerifyCode" type="text" placeholder="123456">
+            </div>
+            <button class="auth-btn" type="button" onclick="sendVerificationCode()">Envoyer le code</button>
+          </div>
+        </div>
+        <div class="auth-field">
+          <label for="authPassword">Mot de passe</label>
+          <input id="authPassword" type="password" placeholder="Mot de passe">
+        </div>
+        <div class="auth-password-check" id="authPasswordChecks">
+          <div class="invalid" id="checkLength">10 caractères minimum</div>
+          <div class="invalid" id="checkUpper">Une majuscule</div>
+          <div class="invalid" id="checkLower">Une minuscule</div>
+          <div class="invalid" id="checkDigit">Un chiffre</div>
+          <div class="invalid" id="checkSpecial">Un caractère spécial</div>
+        </div>
+        <div class="auth-field">
+          <label></label>
+          <label style="display:flex;align-items:center;gap:10px;font-size:12px;color:#555;cursor:pointer;"><input id="authNewsletter" type="checkbox"> Je souhaite recevoir la newsletter</label>
+        </div>
+      </div>
+      <div class="auth-actions">
+        <button class="auth-btn" id="authCreateBtn" onclick="createAccount()">Créer un compte</button>
+      </div>
+      <p class="auth-note">Code de démonstration : 123456</p>
+      <p class="auth-note">Démo / maquette sans vraie sécurité — pas de backend réel.</p>
+      <div id="authCodeInfo" class="auth-note" style="margin-top:10px;color:var(--black);"></div>
+    </div>
+    <div id="authStepLogin" class="auth-step hidden">
+      <div class="auth-fields">
+        <div class="auth-field">
+          <label>Email</label>
+          <div id="authLoginEmail" style="font-size:14px;color:#333;"></div>
+        </div>
+        <div class="auth-field">
+          <label for="authLoginPassword">Mot de passe</label>
+          <input id="authLoginPassword" type="password" placeholder="Mot de passe">
+        </div>
+      </div>
+      <div class="auth-actions">
+        <button class="auth-btn" onclick="loginAccount()">Se connecter</button>
+      </div>
+      <p class="auth-note">Compte existant détecté pour cet email.</p>
+    </div>
+    <div id="authAccountSummary" class="auth-step hidden">
+      <div class="auth-account-card">
+        <div class="auth-account-line"><strong>Nom</strong><span id="accountName"></span></div>
+        <div class="auth-account-line"><strong>Email</strong><span id="accountEmail"></span></div>
+        <div class="auth-account-line"><strong>Téléphone</strong><span id="accountPhone"></span></div>
+        <div class="auth-account-line"><strong>Date de naissance</strong><span id="accountBirth"></span></div>
+        <div class="auth-account-line"><strong>Newsletter</strong><span id="accountNewsletter"></span></div>
+      </div>
+      <div class="auth-actions">
+        <button class="auth-btn" onclick="logoutAccount()">Se déconnecter</button>
+      </div>
     </div>
   </div>
 </div>
@@ -1230,6 +1381,199 @@ function toggleSearch(state){
   document.body.style.overflow = state ? 'hidden' : '';
   if(state){ setTimeout(()=>document.getElementById('searchInput').focus(),300); document.getElementById('searchInput').value=''; renderSearchResults(''); }
 }
+
+let authState = { email:'', mode:'email', code:'123456', hasAccount:false };
+
+function openAccount(){
+  document.getElementById('authOverlay').classList.add('active');
+  document.body.style.overflow='hidden';
+  const currentEmail = localStorage.getItem('saturn_user_current');
+  if(currentEmail){
+    authState.email = currentEmail;
+    authState.mode = 'account';
+    updateAuthUI();
+    return;
+  }
+  authState.email = '';
+  authState.mode = 'email';
+  document.getElementById('authEmail').value = '';
+  document.getElementById('authVerifyCode').value = '';
+  document.getElementById('authPassword').value = '';
+  document.getElementById('authFirstName').value = '';
+  document.getElementById('authLastName').value = '';
+  document.getElementById('authPhone').value = '';
+  document.getElementById('authBirthDay').value = '';
+  document.getElementById('authBirthMonth').value = '';
+  document.getElementById('authBirthYear').value = '';
+  document.getElementById('authNewsletter').checked = false;
+  updateAuthUI();
+  setTimeout(()=>document.getElementById('authEmail').focus(), 100);
+}
+function closeAuth(){
+  document.getElementById('authOverlay').classList.remove('active');
+  document.body.style.overflow='';
+}
+function updateAuthUI(){
+  const title = document.getElementById('authTitle');
+  const stepIndicator = document.getElementById('authStepIndicator');
+  const emailStep = document.getElementById('authStepEmail');
+  const signUpStep = document.getElementById('authStepSignUp');
+  const loginStep = document.getElementById('authStepLogin');
+  const accountStep = document.getElementById('authAccountSummary');
+  const loginEmail = document.getElementById('authLoginEmail');
+  const accountName = document.getElementById('accountName');
+  const accountEmail = document.getElementById('accountEmail');
+  const accountPhone = document.getElementById('accountPhone');
+  const accountBirth = document.getElementById('accountBirth');
+  const accountNewsletter = document.getElementById('accountNewsletter');
+
+  stepIndicator.innerHTML = '';
+  const stepIndex = authState.mode === 'email' ? 0 : authState.mode === 'signup' ? 1 : authState.mode === 'login' ? 1 : 2;
+  for(let i = 0; i < 3; i++){
+    const dot = document.createElement('span');
+    dot.className = 'auth-step-indicator-dot' + (i === stepIndex ? ' active' : '');
+    stepIndicator.appendChild(dot);
+  }
+
+  emailStep.classList.toggle('hidden', authState.mode !== 'email');
+  signUpStep.classList.toggle('hidden', authState.mode !== 'signup');
+  loginStep.classList.toggle('hidden', authState.mode !== 'login');
+  accountStep.classList.toggle('hidden', authState.mode !== 'account');
+
+  document.getElementById('authCodeInfo').textContent = '';
+
+  if(authState.mode === 'email'){
+    title.textContent = 'Connexion / Créer un compte';
+  } else if(authState.mode === 'signup'){
+    title.textContent = 'Créer votre compte';
+  } else if(authState.mode === 'login'){
+    title.textContent = 'Connexion';
+    loginEmail.textContent = authState.email;
+  } else {
+    title.textContent = 'Mon compte';
+    const stored = JSON.parse(localStorage.getItem('saturn_user_' + authState.email) || 'null');
+    if(stored){
+      accountName.textContent = `${stored.gender} ${stored.firstName} ${stored.lastName}`;
+      accountEmail.textContent = authState.email;
+      accountPhone.textContent = stored.phone || '-';
+      accountBirth.textContent = `${stored.birthDay}/${stored.birthMonth}/${stored.birthYear}`;
+      accountNewsletter.textContent = stored.newsletter ? 'Oui' : 'Non';
+    }
+  }
+}
+
+function handleEmailContinue(){
+  const email = document.getElementById('authEmail').value.trim().toLowerCase();
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if(!emailRegex.test(email)){
+    openToast('Entrez un email valide.');
+    return;
+  }
+  authState.email = email;
+  authState.hasAccount = Boolean(localStorage.getItem('saturn_user_' + email));
+  authState.mode = authState.hasAccount ? 'login' : 'signup';
+  updateAuthUI();
+}
+
+function sendVerificationCode(){
+  const email = document.getElementById('authEmail').value.trim();
+  if(!email){
+    openToast('Entrez votre email pour envoyer le code.');
+    return;
+  }
+  authState.code = '123456';
+  document.getElementById('authCodeInfo').textContent = 'Code envoyé (démo) : 123456';
+}
+
+function validatePassword(password){
+  const checks = {
+    length: password.length >= 10,
+    upper: /[A-Z]/.test(password),
+    lower: /[a-z]/.test(password),
+    digit: /[0-9]/.test(password),
+    special: /[^A-Za-z0-9]/.test(password),
+  };
+  document.getElementById('checkLength').className = checks.length ? 'valid' : 'invalid';
+  document.getElementById('checkUpper').className = checks.upper ? 'valid' : 'invalid';
+  document.getElementById('checkLower').className = checks.lower ? 'valid' : 'invalid';
+  document.getElementById('checkDigit').className = checks.digit ? 'valid' : 'invalid';
+  document.getElementById('checkSpecial').className = checks.special ? 'valid' : 'invalid';
+  return Object.values(checks).every(Boolean);
+}
+
+function createAccount(){
+  const gender = document.getElementById('authGender').value;
+  const firstName = document.getElementById('authFirstName').value.trim();
+  const lastName = document.getElementById('authLastName').value.trim();
+  const phone = document.getElementById('authPhone').value.trim();
+  const birthDay = document.getElementById('authBirthDay').value.trim();
+  const birthMonth = document.getElementById('authBirthMonth').value.trim();
+  const birthYear = document.getElementById('authBirthYear').value.trim();
+  const code = document.getElementById('authVerifyCode').value.trim();
+  const password = document.getElementById('authPassword').value;
+  const newsletter = document.getElementById('authNewsletter').checked;
+
+  if(!firstName || !lastName || !phone || !birthDay || !birthMonth || !birthYear){
+    openToast('Remplissez tous les champs du profil.');
+    return;
+  }
+  if(code !== authState.code){
+    openToast('Code incorrect.');
+    return;
+  }
+  if(!validatePassword(password)){
+    openToast('Mot de passe non valide.');
+    return;
+  }
+
+  const account = { email: authState.email, gender, firstName, lastName, phone, birthDay, birthMonth, birthYear, password, newsletter };
+  localStorage.setItem('saturn_user_' + authState.email, JSON.stringify(account));
+  localStorage.setItem('saturn_user_current', authState.email);
+  authState.mode = 'account';
+  openToast('Compte créé ! Vous êtes maintenant connecté.');
+  updateAuthUI();
+}
+
+function loginAccount(){
+  const password = document.getElementById('authLoginPassword').value;
+  const stored = JSON.parse(localStorage.getItem('saturn_user_' + authState.email) || 'null');
+  if(!stored || stored.password !== password){
+    openToast('Email ou mot de passe incorrect.');
+    return;
+  }
+  localStorage.setItem('saturn_user_current', authState.email);
+  authState.mode = 'account';
+  openToast('Connecté.');
+  updateAuthUI();
+}
+
+function logoutAccount(){
+  localStorage.removeItem('saturn_user_current');
+  authState.mode = 'email';
+  authState.email = '';
+  updateAuthUI();
+  closeAuth();
+  openToast('Déconnecté.');
+}
+
+function restoreAccountSession(){
+  const currentEmail = localStorage.getItem('saturn_user_current');
+  if(currentEmail){
+    authState.email = currentEmail;
+    authState.mode = 'account';
+    updateAuthUI();
+  }
+}
+
+document.addEventListener('DOMContentLoaded', restoreAccountSession);
+
+setTimeout(()=>{
+  const passwordField = document.getElementById('authPassword');
+  if(passwordField){
+    passwordField.addEventListener('input', ()=>validatePassword(passwordField.value));
+  }
+}, 50);
+
 function renderSearchResults(q){
   const box = document.getElementById('searchResults');
   if(!q){ box.innerHTML=''; return; }
