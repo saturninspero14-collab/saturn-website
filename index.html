@@ -114,7 +114,18 @@
   .collections{background:var(--gray-light);}
   .coll-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;}
   .coll-card{position:relative;height:420px;overflow:hidden;background:var(--gray-dark);cursor:pointer;}
-  .coll-card img{width:100%;height:100%;object-fit:cover;transition:transform 1.1s var(--ease), filter 1.1s var(--ease);filter:brightness(.82);}
+  .coll-card img{
+    width:auto;
+    height:100%;
+    max-width:100%;
+    max-height:100%;
+    object-fit:contain;
+    object-position:center center;
+    display:block;
+    margin:0 auto;
+    transition:transform 1.1s var(--ease), filter 1.1s var(--ease);
+    filter:brightness(.82);
+  }
   .coll-card:hover img{transform:scale(1.07);filter:brightness(.66);}
   .coll-label{position:absolute;left:26px;bottom:26px;color:var(--white);z-index:2;}
   .coll-label .name{font-size:19px;letter-spacing:2px;text-transform:uppercase;}
@@ -762,8 +773,22 @@ const PRODUCTS = [
   {id:'pochette-ipad-noir', name:'Pochette SATURN iPad Noire', category:'Pochettes', tags:[], price:35, img:'https://i.ibb.co/NnbLCD6T/t-shirt.png', colors:[{hex:'#000',name:'Noir'}], rating:0, reviews:0, desc:"Pochette de protection pour iPad, interieur double microfibre, logo SATURN grave.", oneSize:true, comingSoon:true},
   {id:'pochette-ipad-gris', name:'Pochette SATURN iPad Gris', category:'Pochettes', tags:[], price:35, img:'https://i.ibb.co/zhTT9Hf8/pull-sturn.png', colors:[{hex:'#c9c9c9',name:'Gris chiné'}], rating:0, reviews:0, desc:"Pochette de protection pour iPad, interieur double microfibre, logo SATURN grave.", oneSize:true, comingSoon:true},
 ];
-// Ensure each product has a `photos` array (keep `img` as first photo for compatibility)
-PRODUCTS.forEach(p => { if(!p.photos) p.photos = p.img ? [p.img] : []; p.img = p.photos[0] || ''; });
+// Ensure each product has a `photos` array and that the first photo matches `img` (thumbnail)
+PRODUCTS.forEach(p => {
+  if(!p.photos) p.photos = p.img ? [p.img] : [];
+  // If an explicit `img` exists, make sure it's the first photo in the array.
+  if(p.img){
+    const idx = p.photos.indexOf(p.img);
+    if(idx === -1){
+      p.photos.unshift(p.img);
+    } else if(idx > 0){
+      p.photos.splice(idx, 1);
+      p.photos.unshift(p.img);
+    }
+  }
+  // Fallback: set `img` to the first photo
+  p.img = p.photos[0] || '';
+});
 const SIZES = ['XS','S','M','L','XL'];
 const ALL_COLORS = [...new Map(PRODUCTS.flatMap(p=>p.colors).map(c=>[c.hex,c])).values()];
 const CATEGORIES = ['Hoodies','T-Shirts','Joggings','Accessories','Pochettes'];
@@ -857,7 +882,7 @@ function renderGrid(){
     <div class="prod-card reveal in" onclick="goToProduct('${p.id}')">
       <div class="prod-media">
         <div class="shadow-lift"></div>
-        <div class="prod-carousel" data-pid="${p.id}"></div>
+        <img src="${p.img}" alt="${p.name}">
         ${p.comingSoon ? '<span class="coll-badge" style="background:var(--gold);color:var(--white);">Bientôt disponible</span>' : ''}
         <button class="wishlist-btn" onclick="event.stopPropagation(); toggleWishlist(this)" aria-label="Wishlist">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="1.4"><path d="M12 21s-7.5-4.6-10-9.3C0.3 8 2 4 6 4c2 0 3.5 1 6 3.4C14.5 5 16 4 18 4c4 0 5.7 4 4 7.7C19.5 16.4 12 21 12 21z"/></svg>
@@ -873,17 +898,6 @@ function renderGrid(){
       </div>
     </div>
   `).join('');
-  // initialize small carousels for grid items
-  setTimeout(()=> initGridCarousels(), 0);
-}
-
-function initGridCarousels(){
-  document.querySelectorAll('.prod-carousel').forEach(el=>{
-    const pid = el.dataset.pid;
-    const p = PRODUCTS.find(x=>x.id===pid);
-    if(!p) return;
-    SaturnCarousel.init(el, p.photos, {thumbs:false, zoom:false});
-  });
 }
 function toggleWishlist(btn){ btn.classList.toggle('active'); btn.classList.add('bump'); setTimeout(()=>btn.classList.remove('bump'),400); }
 
