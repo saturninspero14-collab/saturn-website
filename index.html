@@ -313,6 +313,17 @@
   .pp-thumbs img.active{opacity:1;border-color:var(--black);}
   .pp-main-img{flex:1;aspect-ratio:3/4;overflow:hidden;background:var(--gray-light);cursor:zoom-in;position:relative;}
   .pp-main-img img{width:100%;height:100%;object-fit:cover;transition:transform .15s ease-out;}
+  /* Saturn carousel minimal styles (prefixed sat-) */
+  .sat-carousel{position:relative;overflow:hidden;background:var(--gray-light);}
+  .sat-carousel .sat-track{display:flex;transition:transform .4s var(--ease);will-change:transform;}
+  .sat-carousel .sat-slide{min-width:100%;flex-shrink:0;display:flex;align-items:center;justify-content:center;overflow:hidden}
+  .sat-carousel .sat-slide img{width:100%;height:100%;object-fit:cover;display:block}
+  .sat-carousel .sat-arrow{position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.9);border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:5}
+  .sat-carousel .sat-arrow.sat-prev{left:10px}
+  .sat-carousel .sat-arrow.sat-next{right:10px}
+  .sat-carousel .sat-thumbs{display:flex;gap:8px;margin-top:10px}
+  .sat-carousel .sat-thumb{width:64px;height:80px;overflow:hidden;cursor:pointer;border:1px solid transparent;opacity:.6}
+  .sat-carousel .sat-thumb.active{border-color:var(--black);opacity:1}
   .pp-info .eyebrow{font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);margin-bottom:14px;display:block;}
   .pp-info h1{font-size:clamp(26px,3vw,34px);font-weight:200;margin-bottom:14px;letter-spacing:-.3px;}
   .pp-info .pp-rating{font-size:12px;color:var(--gold);margin-bottom:20px;letter-spacing:1px;}
@@ -751,6 +762,8 @@ const PRODUCTS = [
   {id:'pochette-ipad-noir', name:'Pochette SATURN iPad Noire', category:'Pochettes', tags:[], price:35, img:'https://i.ibb.co/NnbLCD6T/t-shirt.png', colors:[{hex:'#000',name:'Noir'}], rating:0, reviews:0, desc:"Pochette de protection pour iPad, interieur double microfibre, logo SATURN grave.", oneSize:true, comingSoon:true},
   {id:'pochette-ipad-gris', name:'Pochette SATURN iPad Gris', category:'Pochettes', tags:[], price:35, img:'https://i.ibb.co/zhTT9Hf8/pull-sturn.png', colors:[{hex:'#c9c9c9',name:'Gris chiné'}], rating:0, reviews:0, desc:"Pochette de protection pour iPad, interieur double microfibre, logo SATURN grave.", oneSize:true, comingSoon:true},
 ];
+// Ensure each product has a `photos` array (keep `img` as first photo for compatibility)
+PRODUCTS.forEach(p => { if(!p.photos) p.photos = p.img ? [p.img] : []; p.img = p.photos[0] || ''; });
 const SIZES = ['XS','S','M','L','XL'];
 const ALL_COLORS = [...new Map(PRODUCTS.flatMap(p=>p.colors).map(c=>[c.hex,c])).values()];
 const CATEGORIES = ['Hoodies','T-Shirts','Joggings','Accessories','Pochettes'];
@@ -833,7 +846,7 @@ function renderGrid(){
     <div class="prod-card reveal in" onclick="goToProduct('${p.id}')">
       <div class="prod-media">
         <div class="shadow-lift"></div>
-        <img src="${p.img}" alt="${p.name}" loading="lazy">
+        <div class="prod-carousel" data-pid="${p.id}"></div>
         ${p.comingSoon ? '<span class="coll-badge" style="background:var(--gold);color:var(--white);">Bientôt disponible</span>' : ''}
         <button class="wishlist-btn" onclick="event.stopPropagation(); toggleWishlist(this)" aria-label="Wishlist">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="1.4"><path d="M12 21s-7.5-4.6-10-9.3C0.3 8 2 4 6 4c2 0 3.5 1 6 3.4C14.5 5 16 4 18 4c4 0 5.7 4 4 7.7C19.5 16.4 12 21 12 21z"/></svg>
@@ -849,6 +862,17 @@ function renderGrid(){
       </div>
     </div>
   `).join('');
+  // initialize small carousels for grid items
+  setTimeout(()=> initGridCarousels(), 0);
+}
+
+function initGridCarousels(){
+  document.querySelectorAll('.prod-carousel').forEach(el=>{
+    const pid = el.dataset.pid;
+    const p = PRODUCTS.find(x=>x.id===pid);
+    if(!p) return;
+    SaturnCarousel.init(el, p.photos, {thumbs:false, zoom:false});
+  });
 }
 function toggleWishlist(btn){ btn.classList.toggle('active'); btn.classList.add('bump'); setTimeout(()=>btn.classList.remove('bump'),400); }
 
@@ -871,7 +895,14 @@ observeReveals();
 function openQuickView(id){
   qvProduct = PRODUCTS.find(x=>x.id===id);
   qvSelectedSize = null;
-  document.getElementById('qvImage').src = qvProduct.img;
+  // Replace or re-init carousel in quick view
+  const qvImgEl = document.getElementById('qvImage');
+  const qvModal = qvImgEl.parentElement;
+  // if previous carousel exists, remove it
+  const existing = qvModal.querySelector('.sat-carousel'); if(existing) existing.remove();
+  const qvCarouselWrap = document.createElement('div'); qvCarouselWrap.className='sat-carousel-wrap';
+  qvModal.replaceChild(qvCarouselWrap, qvImgEl);
+  SaturnCarousel.init(qvCarouselWrap, qvProduct.photos, {thumbs:false, zoom:true});
   document.getElementById('qvName').textContent = qvProduct.name;
   document.getElementById('qvPrice').textContent = qvProduct.comingSoon ? 'Bientôt disponible' : qvProduct.price + ' €';
   document.getElementById('qvDesc').textContent = qvProduct.desc;
@@ -928,9 +959,16 @@ function renderProductPage(){
   document.getElementById('ppColorName').textContent = ppSelectedColor.name;
   document.getElementById('ppMainImg').src = p.img;
 
-  document.getElementById('ppThumbs').innerHTML = [1,2,3].map((n,i)=>
-    `<img src="${p.img}" class="${i===0?'active':''}" onclick="setThumb(this)">`
-  ).join('');
+  // Initialize SaturnCarousel in the product page main image area
+  const ppMainWrap = document.getElementById('ppMainImgWrap');
+  // remove existing img if present
+  const old = ppMainWrap.querySelector('img'); if(old) old.remove();
+  const carouselWrap = document.createElement('div'); carouselWrap.className='pp-sat-carousel';
+  ppMainWrap.appendChild(carouselWrap);
+  SaturnCarousel.init(carouselWrap, p.photos, {thumbs:true, zoom:true});
+
+  // Thumbnails area (if you want clickable small thumbs as well)
+  document.getElementById('ppThumbs').innerHTML = p.photos.map((src,i)=>`<img src="${src}" class="${i===0?'active':''}" onclick="document.querySelector('.pp-sat-carousel .sat-track').style.transform='translateX(' + (-${i}*100) + '%)'; document.querySelectorAll('#ppThumbs img').forEach(t=>t.classList.remove('active')); this.classList.add('active');">`).join('');
 
   document.getElementById('ppColors').innerHTML = p.colors.map(c=>
     `<span class="pp-color-swatch ${c.hex===ppSelectedColor.hex?'sel':''}" style="background:${c.hex};border-color:${c.hex==='#fff'?'#ddd':c.hex}" onclick="setPpColor('${c.hex}')"></span>`
@@ -1146,6 +1184,50 @@ function openToast(msg){
 document.addEventListener('keydown', e=>{
   if(e.key==='Escape'){ closeQuickView(); toggleSearch(false); closeSizeGuide(); closeCart(); }
 });
+/* ======= Minimal SaturnCarousel stub (will be replaced by full component) ======= */
+const SaturnCarousel = {
+  instances: new Map(),
+  init(containerSelectorOrEl, photos, opts={}){
+    const el = typeof containerSelectorOrEl==='string' ? document.querySelector(containerSelectorOrEl) : containerSelectorOrEl;
+    if(!el) return;
+    // clear
+    el.innerHTML = '';
+    el.classList.add('sat-carousel');
+    const track = document.createElement('div'); track.className='sat-track';
+    photos.forEach(src=>{
+      const s = document.createElement('div'); s.className='sat-slide';
+      const img = document.createElement('img'); img.src = src; img.loading='lazy'; s.appendChild(img); track.appendChild(s);
+    });
+    el.appendChild(track);
+    // arrows
+    const prev = document.createElement('button'); prev.className='sat-arrow sat-prev'; prev.innerHTML='‹';
+    const next = document.createElement('button'); next.className='sat-arrow sat-next'; next.innerHTML='›';
+    el.appendChild(prev); el.appendChild(next);
+    // thumbs
+    if(opts.thumbs){
+      const thumbs = document.createElement('div'); thumbs.className='sat-thumbs';
+      photos.forEach((src,i)=>{ const t = document.createElement('img'); t.className='sat-thumb'+(i===0?' active':''); t.src=src; t.addEventListener('click',()=>goTo(i)); thumbs.appendChild(t); });
+      el.appendChild(thumbs);
+    }
+    let idx=0; const slides = track.children; const total = slides.length;
+    function update(){ track.style.transform = `translateX(${ -idx*100 }%)`; Array.from(el.querySelectorAll('.sat-thumb')).forEach((t,i)=>t.classList.toggle('active',i===idx)); }
+    function goTo(i){ idx = (i+total)%total; update(); }
+    prev.addEventListener('click', (e)=>{ e.stopPropagation(); goTo(idx-1); });
+    next.addEventListener('click', (e)=>{ e.stopPropagation(); goTo(idx+1); });
+    // touch support
+    let startX=null, deltaX=0;
+    el.addEventListener('touchstart', (e)=>{ startX = e.touches[0].clientX; });
+    el.addEventListener('touchmove', (e)=>{ if(startX==null) return; deltaX = e.touches[0].clientX - startX; });
+    el.addEventListener('touchend', ()=>{ if(Math.abs(deltaX)>40){ if(deltaX<0) goTo(idx+1); else goTo(idx-1); } startX=null; deltaX=0; });
+    // click-to-zoom (simple toggle)
+    el.addEventListener('click', (e)=>{ if(e.target.tagName==='IMG' && opts.zoom){ const img = e.target; if(img.style.transform==='scale(2)'){ img.style.transform='scale(1)'; img.style.cursor='zoom-in'; } else { img.style.transform='scale(2)'; img.style.cursor='zoom-out'; } } });
+    update();
+    const id = Math.random().toString(36).slice(2,9);
+    SaturnCarousel.instances.set(id, {el, photos, goTo});
+    return id;
+  }
+};
 </script>
+
 </body>
 </html>
