@@ -328,7 +328,15 @@
   .sat-carousel{position:relative;overflow:hidden;background:var(--gray-light);}
   .sat-carousel .sat-track{display:flex;transition:transform .4s var(--ease);will-change:transform;}
   .sat-carousel .sat-slide{min-width:100%;flex-shrink:0;display:flex;align-items:center;justify-content:center;overflow:hidden}
-  .sat-carousel .sat-slide img{width:100%;height:100%;object-fit:cover;display:block}
+  .sat-carousel .sat-viewport{overflow:hidden;}
+  .sat-carousel .sat-slide img{width:100%;height:100%;object-fit:contain;display:block;transition:transform .35s ease;}
+  .sat-carousel .sat-img.sat-zoomed{transform:scale(var(--sat-zoom,2));cursor:zoom-out;}
+  /* Quick View: faces/grid mode */
+  .qv-view-modes{display:flex;gap:8px;margin:8px 0 14px;align-items:center}
+  .qv-view-modes button{font-size:12px;padding:8px 12px;border:1px solid #ddd;background:transparent;cursor:pointer}
+  .qv-view-modes button.active{background:var(--black);color:var(--white);border-color:var(--black)}
+  .qv-faces-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding-top:8px}
+  .qv-faces-grid img{width:100%;height:110px;object-fit:cover;cursor:pointer;border:1px solid #eee}
   .sat-carousel .sat-arrow{position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.9);border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:5}
   .sat-carousel .sat-arrow.sat-prev{left:10px}
   .sat-carousel .sat-arrow.sat-next{right:10px}
@@ -755,38 +763,29 @@
 <script>
 /* ================= PRODUCT DATA ================= */
 const PRODUCTS = [
-  {id:'hoodie-noir', name:'Hoodie SATURN Noir', category:'Hoodies', tags:['new'], price:145, img:'https://i.ibb.co/JWQ696cS/Pull.png', colors:[{hex:'#000',name:'Noir'}], rating:4.9, reviews:31, desc:"Hoodie oversize en molleton épais, logo SATURN floqué sur la poitrine. Coupe ample, capuche doublée, finitions soignées."},
-  {id:'hoodie-gris', name:'Hoodie SATURN Gris', category:'Hoodies', tags:['new'], price:145, img:'https://i.ibb.co/zhTT9Hf8/pull-sturn.png', colors:[{hex:'#c9c9c9',name:'Gris chiné'}], rating:4.7, reviews:18, desc:"Hoodie oversize gris chiné, logo SATURN imprimé ton sur ton. Coupe ample, idéal toutes saisons."},
-  {id:'tee-noir', name:'T-Shirt SATURN Noir', category:'T-Shirts', tags:['new'], price:85, img:'https://i.ibb.co/NnbLCD6T/t-shirt.png', colors:[{hex:'#000',name:'Noir'}], rating:4.8, reviews:27, desc:"T-shirt noir 100% coton, logo SATURN imprimé blanc en poitrine. Coupe droite classique."},
-  {id:'tee-blanc', name:'T-Shirt SATURN Blanc', category:'T-Shirts', tags:[], price:85, img:'https://i.ibb.co/Q35RgxYy/t-shirt-blanc.png', colors:[{hex:'#fff',name:'Blanc'}], rating:4.5, reviews:9, desc:"T-shirt blanc épuré, logo SATURN imprimé noir en poitrine, finitions renforcées."},
-  {id:'tee-blanc-us', name:'T-Shirt SATURN Blanc — Coupe Américaine', category:'T-Shirts', tags:['new'], price:90, img:'https://i.ibb.co/Cg7LPf8/t-shirt-blanc-am-ricain.png', colors:[{hex:'#fff',name:'Blanc'}], rating:4.6, reviews:5, desc:"T-shirt oversize à coupe américaine — épaules tombantes, manches larges — dans un tissu épais premium."},
-  {id:'tee-noir-us', name:'T-Shirt SATURN Noir — Coupe Américaine', category:'T-Shirts', tags:['new'], price:90, img:'https://i.ibb.co/Q3Mpgtd3/t-shirt-noir-am-ricain.png', colors:[{hex:'#000',name:'Noir'}], rating:4.7, reviews:4, desc:"T-shirt oversize à coupe américaine — épaules tombantes, manches larges — dans un tissu épais premium."},
-  {id:'jogging-anthracite', name:'Jogging SATURN Anthracite', category:'Joggings', tags:['new'], price:120, img:'https://i.ibb.co/kgN4QGCM/tee-shirt.png', colors:[{hex:'#1a1a1a',name:'Anthracite'}], rating:0, reviews:0, desc:"Jogging confortable en molleton épais, taille élastiquée, poches zippées discrètes.", comingSoon:true},
-  {id:'jogging-noir', name:'Jogging SATURN Noir', category:'Joggings', tags:[], price:120, img:'https://i.ibb.co/kgN4QGCM/tee-shirt.png', colors:[{hex:'#000',name:'Noir'}], rating:0, reviews:0, desc:"Jogging noir uni, coupe droite, ceinture ajustable ton sur ton.", comingSoon:true},
-  {id:'cap-rings', name:'Casquette Rings', category:'Accessories', subcategory:'Casquettes', tags:[], price:95, img:'https://i.ibb.co/NnbLCD6T/t-shirt.png', colors:[{hex:'#000',name:'Noir'}], rating:0, reviews:0, desc:"Casquette structurée 6 panneaux, broderie ton sur ton, sangle ajustable en cuir.", oneSize:true, comingSoon:true},
-  {id:'cap-eclipse', name:'Casquette Eclipse', category:'Accessories', subcategory:'Casquettes', tags:[], price:95, img:'https://i.ibb.co/NnbLCD6T/t-shirt.png', colors:[{hex:'#c9c9c9',name:'Gris chiné'}], rating:0, reviews:0, desc:"Casquette structurée, broderie tissée, sangle ajustable.", oneSize:true, comingSoon:true},
-{id:'chaussette-noire', name:'Chaussettes SATURN Noires', category:'Accessories', subcategory:'Chaussettes', tags:[], price:15, img:'https://i.ibb.co/Xk26L90v/tee-shirt-saturn.png', colors:[{hex:'#000',name:'Noir'}], rating:0, reviews:0, desc:"Chaussettes en coton peigné, logo SATURN tissé sur le côté.", oneSize:true, comingSoon:true},
-{id:'chaussette-blanche', name:'Chaussettes SATURN Blanches', category:'Accessories', subcategory:'Chaussettes', tags:[], price:15, img:'https://i.ibb.co/Q35RgxYy/t-shirt-blanc.png', colors:[{hex:'#fff',name:'Blanc'}], rating:0, reviews:0, desc:"Chaussettes en coton peigne, logo SATURN tisse sur le cote.", oneSize:true, comingSoon:true},
-  {id:'bag-orbit', name:'Sac Orbit', category:'Accessories', subcategory:'Sacs', tags:['limited'], price:135, img:'https://i.ibb.co/NnbLCD6T/t-shirt.png', colors:[{hex:'#000',name:'Noir'}], rating:4.9, reviews:8, desc:"Sac bandoulière en toile robuste, quincaillerie or discret, édition limitée.", oneSize:true, comingSoon:true},
-  {id:'pochette-iphone-noir', name:'Pochette SATURN iPhone Noire', category:'Pochettes', tags:['new'], price:25, img:'https://i.ibb.co/NnbLCD6T/t-shirt.png', colors:[{hex:'#000',name:'Noir'}], rating:0, reviews:0, desc:"Pochette de protection pour iPhone, logo SATURN grave, finition mate.", oneSize:true, comingSoon:true},
-  {id:'pochette-iphone-blanc', name:'Pochette SATURN iPhone Blanche', category:'Pochettes', tags:['new'], price:25, img:'https://i.ibb.co/Q35RgxYy/t-shirt-blanc.png', colors:[{hex:'#fff',name:'Blanc'}], rating:0, reviews:0, desc:"Pochette de protection pour iPhone, logo SATURN grave, finition mate.", oneSize:true, comingSoon:true},
-  {id:'pochette-ipad-noir', name:'Pochette SATURN iPad Noire', category:'Pochettes', tags:[], price:35, img:'https://i.ibb.co/NnbLCD6T/t-shirt.png', colors:[{hex:'#000',name:'Noir'}], rating:0, reviews:0, desc:"Pochette de protection pour iPad, interieur double microfibre, logo SATURN grave.", oneSize:true, comingSoon:true},
-  {id:'pochette-ipad-gris', name:'Pochette SATURN iPad Gris', category:'Pochettes', tags:[], price:35, img:'https://i.ibb.co/zhTT9Hf8/pull-sturn.png', colors:[{hex:'#c9c9c9',name:'Gris chiné'}], rating:0, reviews:0, desc:"Pochette de protection pour iPad, interieur double microfibre, logo SATURN grave.", oneSize:true, comingSoon:true},
+  {id:'hoodie-noir', name:'Hoodie SATURN Noir', category:'Hoodies', tags:['new'], price:145, photos:['https://i.ibb.co/JWQ696cS/Pull.png'], colors:[{hex:'#000',name:'Noir'}], rating:4.9, reviews:31, desc:"Hoodie oversize en molleton épais, logo SATURN floqué sur la poitrine. Coupe ample, capuche doublée, finitions soignées."},
+  {id:'hoodie-gris', name:'Hoodie SATURN Gris', category:'Hoodies', tags:['new'], price:145, photos:['https://i.ibb.co/zhTT9Hf8/pull-sturn.png'], colors:[{hex:'#c9c9c9',name:'Gris chiné'}], rating:4.7, reviews:18, desc:"Hoodie oversize gris chiné, logo SATURN imprimé ton sur ton. Coupe ample, idéal toutes saisons."},
+  {id:'tee-noir', name:'T-Shirt SATURN Noir', category:'T-Shirts', tags:['new'], price:85, photos:['https://i.ibb.co/NnbLCD6T/t-shirt.png'], colors:[{hex:'#000',name:'Noir'}], rating:4.8, reviews:27, desc:"T-shirt noir 100% coton, logo SATURN imprimé blanc en poitrine. Coupe droite classique."},
+  {id:'tee-blanc', name:'T-Shirt SATURN Blanc', category:'T-Shirts', tags:[], price:85, photos:['https://i.ibb.co/Q35RgxYy/t-shirt-blanc.png'], colors:[{hex:'#fff',name:'Blanc'}], rating:4.5, reviews:9, desc:"T-shirt blanc épuré, logo SATURN imprimé noir en poitrine, finitions renforcées."},
+  {id:'tee-blanc-us', name:'T-Shirt SATURN Blanc — Coupe Américaine', category:'T-Shirts', tags:['new'], price:90, photos:['https://i.ibb.co/Cg7LPf8/t-shirt-blanc-am-ricain.png'], colors:[{hex:'#fff',name:'Blanc'}], rating:4.6, reviews:5, desc:"T-shirt oversize à coupe américaine — épaules tombantes, manches larges — dans un tissu épais premium."},
+  {id:'tee-noir-us', name:'T-Shirt SATURN Noir — Coupe Américaine', category:'T-Shirts', tags:['new'], price:90, photos:['https://i.ibb.co/Q3Mpgtd3/t-shirt-noir-am-ricain.png'], colors:[{hex:'#000',name:'Noir'}], rating:4.7, reviews:4, desc:"T-shirt oversize à coupe américaine — épaules tombantes, manches larges — dans un tissu épais premium."},
+  {id:'jogging-anthracite', name:'Jogging SATURN Anthracite', category:'Joggings', tags:['new'], price:120, photos:['https://i.ibb.co/kgN4QGCM/tee-shirt.png'], colors:[{hex:'#1a1a1a',name:'Anthracite'}], rating:0, reviews:0, desc:"Jogging confortable en molleton épais, taille élastiquée, poches zippées discrètes.", comingSoon:true},
+  {id:'jogging-noir', name:'Jogging SATURN Noir', category:'Joggings', tags:[], price:120, photos:['https://i.ibb.co/kgN4QGCM/tee-shirt.png'], colors:[{hex:'#000',name:'Noir'}], rating:0, reviews:0, desc:"Jogging noir uni, coupe droite, ceinture ajustable ton sur ton.", comingSoon:true},
+  {id:'cap-rings', name:'Casquette Rings', category:'Accessories', subcategory:'Casquettes', tags:[], price:95, photos:['https://i.ibb.co/NnbLCD6T/t-shirt.png'], colors:[{hex:'#000',name:'Noir'}], rating:0, reviews:0, desc:"Casquette structurée 6 panneaux, broderie ton sur ton, sangle ajustable en cuir.", oneSize:true, comingSoon:true},
+  {id:'cap-eclipse', name:'Casquette Eclipse', category:'Accessories', subcategory:'Casquettes', tags:[], price:95, photos:['https://i.ibb.co/NnbLCD6T/t-shirt.png'], colors:[{hex:'#c9c9c9',name:'Gris chiné'}], rating:0, reviews:0, desc:"Casquette structurée, broderie tissée, sangle ajustable.", oneSize:true, comingSoon:true},
+  {id:'chaussette-noire', name:'Chaussettes SATURN Noires', category:'Accessories', subcategory:'Chaussettes', tags:[], price:15, photos:['https://i.ibb.co/Xk26L90v/tee-shirt-saturn.png'], colors:[{hex:'#000',name:'Noir'}], rating:0, reviews:0, desc:"Chaussettes en coton peigné, logo SATURN tissé sur le côté.", oneSize:true, comingSoon:true},
+  {id:'chaussette-blanche', name:'Chaussettes SATURN Blanches', category:'Accessories', subcategory:'Chaussettes', tags:[], price:15, photos:['https://i.ibb.co/Q35RgxYy/t-shirt-blanc.png'], colors:[{hex:'#fff',name:'Blanc'}], rating:0, reviews:0, desc:"Chaussettes en coton peigne, logo SATURN tisse sur le cote.", oneSize:true, comingSoon:true},
+  {id:'bag-orbit', name:'Sac Orbit', category:'Accessories', subcategory:'Sacs', tags:['limited'], price:135, photos:['https://i.ibb.co/NnbLCD6T/t-shirt.png'], colors:[{hex:'#000',name:'Noir'}], rating:4.9, reviews:8, desc:"Sac bandoulière en toile robuste, quincaillerie or discret, édition limitée.", oneSize:true, comingSoon:true},
+  {id:'pochette-iphone-noir', name:'Pochette SATURN iPhone Noire', category:'Pochettes', tags:['new'], price:25, photos:['https://i.ibb.co/NnbLCD6T/t-shirt.png'], colors:[{hex:'#000',name:'Noir'}], rating:0, reviews:0, desc:"Pochette de protection pour iPhone, logo SATURN grave, finition mate.", oneSize:true, comingSoon:true},
+  {id:'pochette-iphone-blanc', name:'Pochette SATURN iPhone Blanche', category:'Pochettes', tags:['new'], price:25, photos:['https://i.ibb.co/Q35RgxYy/t-shirt-blanc.png'], colors:[{hex:'#fff',name:'Blanc'}], rating:0, reviews:0, desc:"Pochette de protection pour iPhone, logo SATURN grave, finition mate.", oneSize:true, comingSoon:true},
+  {id:'pochette-ipad-noir', name:'Pochette SATURN iPad Noire', category:'Pochettes', tags:[], price:35, photos:['https://i.ibb.co/NnbLCD6T/t-shirt.png'], colors:[{hex:'#000',name:'Noir'}], rating:0, reviews:0, desc:"Pochette de protection pour iPad, interieur double microfibre, logo SATURN grave.", oneSize:true, comingSoon:true},
+  {id:'pochette-ipad-gris', name:'Pochette SATURN iPad Gris', category:'Pochettes', tags:[], price:35, photos:['https://i.ibb.co/zhTT9Hf8/pull-sturn.png'], colors:[{hex:'#c9c9c9',name:'Gris chiné'}], rating:0, reviews:0, desc:"Pochette de protection pour iPad, interieur double microfibre, logo SATURN grave.", oneSize:true, comingSoon:true},
 ];
 // Ensure each product has a `photos` array and that the first photo matches `img` (thumbnail)
 PRODUCTS.forEach(p => {
-  if(!p.photos) p.photos = p.img ? [p.img] : [];
-  // If an explicit `img` exists, make sure it's the first photo in the array.
-  if(p.img){
-    const idx = p.photos.indexOf(p.img);
-    if(idx === -1){
-      p.photos.unshift(p.img);
-    } else if(idx > 0){
-      p.photos.splice(idx, 1);
-      p.photos.unshift(p.img);
-    }
-  }
-  // Fallback: set `img` to the first photo
+  // Ensure there's always a photos array
+  if(!p.photos) p.photos = [];
+  // Ensure a legacy `img` field points to the primary photo for compatibility
   p.img = p.photos[0] || '';
 });
 const SIZES = ['XS','S','M','L','XL'];
@@ -882,12 +881,12 @@ function renderGrid(){
     <div class="prod-card reveal in" onclick="goToProduct('${p.id}')">
       <div class="prod-media">
         <div class="shadow-lift"></div>
-        <img src="${p.img}" alt="${p.name}">
+        <img src="${p.photos[0]}" alt="${p.name}">
         ${p.comingSoon ? '<span class="coll-badge" style="background:var(--gold);color:var(--white);">Bientôt disponible</span>' : ''}
         <button class="wishlist-btn" onclick="event.stopPropagation(); toggleWishlist(this)" aria-label="Wishlist">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="1.4"><path d="M12 21s-7.5-4.6-10-9.3C0.3 8 2 4 6 4c2 0 3.5 1 6 3.4C14.5 5 16 4 18 4c4 0 5.7 4 4 7.7C19.5 16.4 12 21 12 21z"/></svg>
         </button>
-        <button class="quick-view-btn" onclick="event.stopPropagation(); openQuickView('${p.id}')">${p.comingSoon ? 'Aperçu' : 'Quick View'}</button>
+        <button class="quick-view-btn" onclick="event.stopPropagation(); openQuickView('${p.id}')">APERÇU</button>
       </div>
       <div class="prod-info">
         <div class="name">${p.name}</div>
@@ -921,13 +920,25 @@ function openQuickView(id){
   qvProduct = PRODUCTS.find(x=>x.id===id);
   qvSelectedSize = null;
   // Replace or re-init carousel in quick view
-  const qvImgEl = document.getElementById('qvImage');
-  const qvModal = qvImgEl.parentElement;
+  const qvModal = document.querySelector('#qvOverlay .qv-modal');
+  const qvImgEl = qvModal.querySelector('#qvImage');
   // if previous carousel exists, remove it
   const existing = qvModal.querySelector('.sat-carousel'); if(existing) existing.remove();
   const qvCarouselWrap = document.createElement('div'); qvCarouselWrap.className='sat-carousel-wrap';
-  qvModal.replaceChild(qvCarouselWrap, qvImgEl);
-  SaturnCarousel.init(qvCarouselWrap, qvProduct.photos, {thumbs:false, zoom:true});
+  if(qvImgEl){ qvModal.replaceChild(qvCarouselWrap, qvImgEl); }
+  else {
+    const oldWrap = qvModal.querySelector('.sat-carousel-wrap');
+    if(oldWrap) oldWrap.replaceWith(qvCarouselWrap); else qvModal.insertBefore(qvCarouselWrap, qvModal.firstChild);
+  }
+  // initialize with reduced zoom for Quick View
+  SaturnCarousel.init(qvCarouselWrap, qvProduct.photos, {thumbs:false, zoom:true, zoomScale:1.35});
+  // add view mode controls (Standard / Plusieurs faces)
+  const qvInfo = document.querySelector('#qvOverlay .qv-info');
+  // remove existing view modes if any
+  const oldModes = qvInfo.querySelector('#qvViewModes'); if(oldModes) oldModes.remove();
+  const modes = document.createElement('div'); modes.id = 'qvViewModes'; modes.className='qv-view-modes';
+  modes.innerHTML = `<button id="qvModeStandard" class="active" onclick="qvSetViewMode('standard')">Standard</button><button id="qvModeFaces" onclick="qvSetViewMode('faces')">Plusieurs faces</button>`;
+  qvInfo.insertBefore(modes, qvInfo.firstChild);
   document.getElementById('qvName').textContent = qvProduct.name;
   document.getElementById('qvPrice').textContent = qvProduct.comingSoon ? 'Bientôt disponible' : qvProduct.price + ' €';
   document.getElementById('qvDesc').textContent = qvProduct.desc;
@@ -946,12 +957,41 @@ function openQuickView(id){
   document.getElementById('qvOverlay').classList.add('active');
   document.body.style.overflow='hidden';
 }
+function qvSetViewMode(mode){
+  const qvModal = document.querySelector('#qvOverlay .qv-modal');
+  const wrap = qvModal.querySelector('.sat-carousel-wrap');
+  const btnStandard = document.getElementById('qvModeStandard');
+  const btnFaces = document.getElementById('qvModeFaces');
+  if(btnStandard) btnStandard.classList.toggle('active', mode==='standard');
+  if(btnFaces) btnFaces.classList.toggle('active', mode==='faces');
+  // switch view
+  if(mode==='faces'){
+    // remove any carousel inside and render grid of photos
+    const existing = wrap.querySelector('.sat-carousel'); if(existing) existing.remove();
+    wrap.innerHTML = '';
+    const main = document.createElement('img'); main.id='qvMainView'; main.src = qvProduct.photos[0] || ''; main.style.width='100%'; main.style.height='360px'; main.style.objectFit='contain'; main.style.display='block';
+    wrap.appendChild(main);
+    const grid = document.createElement('div'); grid.className='qv-faces-grid';
+    qvProduct.photos.forEach((src,i)=>{
+      const t = document.createElement('img'); t.src = src; t.loading='lazy'; t.addEventListener('click', ()=>{ main.src = src; });
+      grid.appendChild(t);
+    });
+    wrap.appendChild(grid);
+  } else {
+    // restore carousel (standard)
+    wrap.innerHTML = '';
+    SaturnCarousel.init(wrap, qvProduct.photos, {thumbs:false, zoom:true, zoomScale:1.35});
+  }
+}
 function qvSelectSize(btn,s){ document.querySelectorAll('#qvSizes button').forEach(b=>b.classList.remove('sel')); btn.classList.add('sel'); qvSelectedSize=s; }
 function closeQuickView(){ document.getElementById('qvOverlay').classList.remove('active'); document.body.style.overflow=''; }
 function addToCartFromQV(e){
   if(qvProduct.comingSoon){ openToast('Ce produit sera bientôt disponible'); return; }
   if(!qvSelectedSize){ openToast('Sélectionnez une taille'); return; }
-  addToCart(qvProduct, qvProduct.colors[0].name, qvSelectedSize, 1, e.target.closest('.qv-modal').querySelector('img'));
+  const modal = e.target.closest('.qv-modal');
+  const carouselEl = modal.querySelector('.sat-carousel');
+  const srcImgEl = (carouselEl && SaturnCarousel.getCurrentImage(carouselEl)) || modal.querySelector('#qvMainView') || modal.querySelector('img');
+  addToCart(qvProduct, qvProduct.colors[0].name, qvSelectedSize, 1, srcImgEl);
   closeQuickView();
 }
 
@@ -982,7 +1022,8 @@ function renderProductPage(){
   document.getElementById('ppPrice').textContent = p.comingSoon ? 'Bientôt disponible' : p.price + ' €';
   document.getElementById('ppDesc').textContent = p.desc;
   document.getElementById('ppColorName').textContent = ppSelectedColor.name;
-  document.getElementById('ppMainImg').src = p.img;
+  const existingMainImg = document.getElementById('ppMainImg');
+  if(existingMainImg) existingMainImg.src = p.photos[0] || '';
 
   // Initialize SaturnCarousel in the product page main image area
   const ppMainWrap = document.getElementById('ppMainImgWrap');
@@ -992,8 +1033,8 @@ function renderProductPage(){
   ppMainWrap.appendChild(carouselWrap);
   SaturnCarousel.init(carouselWrap, p.photos, {thumbs:true, zoom:true});
 
-  // Thumbnails area (if you want clickable small thumbs as well)
-  document.getElementById('ppThumbs').innerHTML = p.photos.map((src,i)=>`<img src="${src}" class="${i===0?'active':''}" onclick="document.querySelector('.pp-sat-carousel .sat-track').style.transform='translateX(' + (-${i}*100) + '%)'; document.querySelectorAll('#ppThumbs img').forEach(t=>t.classList.remove('active')); this.classList.add('active');">`).join('');
+  // Clear manual thumbnails (carousel will render its own thumbs when enabled)
+  document.getElementById('ppThumbs').innerHTML = '';
 
   document.getElementById('ppColors').innerHTML = p.colors.map(c=>
     `<span class="pp-color-swatch ${c.hex===ppSelectedColor.hex?'sel':''}" style="background:${c.hex};border-color:${c.hex==='#fff'?'#ddd':c.hex}" onclick="setPpColor('${c.hex}')"></span>`
@@ -1039,7 +1080,7 @@ function renderProductPage(){
     <div class="prod-card" onclick="goToProduct('${sp.id}')">
       <div class="prod-media">
         <div class="shadow-lift"></div>
-        <img src="${sp.img}" alt="${sp.name}">
+        <img src="${sp.photos[0]}" alt="${sp.name}">
         ${sp.comingSoon ? '<span class="coll-badge" style="background:var(--gold);color:var(--white);">Bientôt</span>' : ''}
       </div>
       <div class="prod-info">
@@ -1065,26 +1106,35 @@ function addToCartFromPage(e){
   if(currentProduct.comingSoon){ openToast('Ce produit sera bientôt disponible'); return; }
   if(!currentProduct.oneSize && !ppSelectedSize){ openToast('Sélectionnez une taille'); return; }
   const size = currentProduct.oneSize ? 'Unique' : ppSelectedSize;
-  addToCart(currentProduct, ppSelectedColor.name, size, ppQty, document.getElementById('ppMainImg'));
+  const carouselEl = document.querySelector('.pp-sat-carousel');
+  const srcImgEl = (carouselEl && SaturnCarousel.getCurrentImage(carouselEl)) || document.getElementById('ppMainImg');
+  addToCart(currentProduct, ppSelectedColor.name, size, ppQty, srcImgEl);
 }
 
 /* ================= ZOOM ON PRODUCT IMAGE ================= */
 function zoomMove(e){
   const wrap = document.getElementById('ppMainImgWrap');
-  const img = document.getElementById('ppMainImg');
+  const carouselEl = wrap.querySelector('.pp-sat-carousel');
+  const img = (carouselEl && SaturnCarousel.getCurrentImage(carouselEl)) || document.getElementById('ppMainImg');
+  if(!img) return;
   const rect = wrap.getBoundingClientRect();
   const x = ((e.clientX-rect.left)/rect.width)*100;
   const y = ((e.clientY-rect.top)/rect.height)*100;
   img.style.transformOrigin = `${x}% ${y}%`;
   img.style.transform = 'scale(1.8)';
 }
-function zoomReset(){ document.getElementById('ppMainImg').style.transform='scale(1)'; }
+function zoomReset(){
+  const wrap = document.getElementById('ppMainImgWrap');
+  const carouselEl = wrap ? wrap.querySelector('.pp-sat-carousel') : null;
+  const img = (carouselEl && SaturnCarousel.getCurrentImage(carouselEl)) || document.getElementById('ppMainImg');
+  if(img) img.style.transform='scale(1)';
+}
 
 /* ================= CART ================= */
 function addToCart(product, colorName, size, qty, sourceImgEl){
   const existing = cart.find(c=>c.id===product.id && c.color===colorName && c.size===size);
   if(existing){ existing.qty += qty; } else {
-    cart.push({id:product.id, name:product.name, price:product.price, img:product.img, color:colorName, size:size, qty:qty});
+    cart.push({id:product.id, name:product.name, price:product.price, img:(product.photos && product.photos[0]) || product.img || '', color:colorName, size:size, qty:qty});
   }
 
   renderCart();
@@ -1186,7 +1236,7 @@ function renderSearchResults(q){
   const matches = PRODUCTS.filter(p=>p.name.toLowerCase().includes(q.toLowerCase()) || p.category.toLowerCase().includes(q.toLowerCase()));
   box.innerHTML = matches.length ? matches.map(p=>`
     <div class="search-result-item" onclick="toggleSearch(false); goToProduct('${p.id}')">
-      <img src="${p.img}">
+      <img src="${p.photos[0]}">
       <div><div class="n">${p.name}</div><div class="p">${p.category} · ${p.comingSoon ? 'Bientôt disponible' : p.price + ' €'}</div></div>
     </div>
   `).join('') : '<div style="text-align:center;color:#999;font-size:13px;padding:20px 0;">Aucun résultat</div>';
@@ -1210,47 +1260,123 @@ function openToast(msg){
 document.addEventListener('keydown', e=>{
   if(e.key==='Escape'){ closeQuickView(); toggleSearch(false); closeSizeGuide(); closeCart(); }
 });
-/* ======= Minimal SaturnCarousel stub (will be replaced by full component) ======= */
+/* ======= SaturnCarousel: swipe, arrows, thumbs, zoom ======= */
 const SaturnCarousel = {
   instances: new Map(),
-  init(containerSelectorOrEl, photos, opts={}){
-    const el = typeof containerSelectorOrEl==='string' ? document.querySelector(containerSelectorOrEl) : containerSelectorOrEl;
+  init(containerSelectorOrEl, photos = [], opts = {}){
+    const el = typeof containerSelectorOrEl === 'string' ? document.querySelector(containerSelectorOrEl) : containerSelectorOrEl;
     if(!el) return;
     // clear
     el.innerHTML = '';
     el.classList.add('sat-carousel');
-    const track = document.createElement('div'); track.className='sat-track';
-    photos.forEach(src=>{
-      const s = document.createElement('div'); s.className='sat-slide';
-      const img = document.createElement('img'); img.src = src; img.loading='lazy'; s.appendChild(img); track.appendChild(s);
+    // apply instance-specific zoom scale via CSS variable (default 2)
+    try{ el.style.setProperty('--sat-zoom', opts && opts.zoomScale ? opts.zoomScale : 2); }catch(e){}
+
+    // structure: viewport -> track -> slides
+    const viewport = document.createElement('div'); viewport.className = 'sat-viewport';
+    const track = document.createElement('div'); track.className = 'sat-track';
+    viewport.appendChild(track);
+    el.appendChild(viewport);
+
+    // build slides
+    photos.forEach(src => {
+      const slide = document.createElement('div'); slide.className = 'sat-slide';
+      const img = document.createElement('img'); img.src = src; img.loading = 'lazy'; img.draggable = false; img.className = 'sat-img';
+      slide.appendChild(img);
+      track.appendChild(slide);
     });
-    el.appendChild(track);
+
     // arrows
-    const prev = document.createElement('button'); prev.className='sat-arrow sat-prev'; prev.innerHTML='‹';
-    const next = document.createElement('button'); next.className='sat-arrow sat-next'; next.innerHTML='›';
+    const prev = document.createElement('button'); prev.className = 'sat-arrow sat-prev'; prev.innerHTML = '‹';
+    const next = document.createElement('button'); next.className = 'sat-arrow sat-next'; next.innerHTML = '›';
     el.appendChild(prev); el.appendChild(next);
+
     // thumbs
+    let thumbs;
     if(opts.thumbs){
-      const thumbs = document.createElement('div'); thumbs.className='sat-thumbs';
-      photos.forEach((src,i)=>{ const t = document.createElement('img'); t.className='sat-thumb'+(i===0?' active':''); t.src=src; t.addEventListener('click',()=>goTo(i)); thumbs.appendChild(t); });
+      thumbs = document.createElement('div'); thumbs.className = 'sat-thumbs';
+      photos.forEach((src,i) => {
+        const t = document.createElement('img'); t.className = 'sat-thumb' + (i===0? ' active' : ''); t.src = src; t.loading = 'lazy';
+        t.addEventListener('click', (e)=>{ e.stopPropagation(); goTo(i); });
+        thumbs.appendChild(t);
+      });
       el.appendChild(thumbs);
     }
-    let idx=0; const slides = track.children; const total = slides.length;
-    function update(){ track.style.transform = `translateX(${ -idx*100 }%)`; Array.from(el.querySelectorAll('.sat-thumb')).forEach((t,i)=>t.classList.toggle('active',i===idx)); }
-    function goTo(i){ idx = (i+total)%total; update(); }
-    prev.addEventListener('click', (e)=>{ e.stopPropagation(); goTo(idx-1); });
-    next.addEventListener('click', (e)=>{ e.stopPropagation(); goTo(idx+1); });
-    // touch support
-    let startX=null, deltaX=0;
-    el.addEventListener('touchstart', (e)=>{ startX = e.touches[0].clientX; });
-    el.addEventListener('touchmove', (e)=>{ if(startX==null) return; deltaX = e.touches[0].clientX - startX; });
-    el.addEventListener('touchend', ()=>{ if(Math.abs(deltaX)>40){ if(deltaX<0) goTo(idx+1); else goTo(idx-1); } startX=null; deltaX=0; });
-    // click-to-zoom (simple toggle)
-    el.addEventListener('click', (e)=>{ if(e.target.tagName==='IMG' && opts.zoom){ const img = e.target; if(img.style.transform==='scale(2)'){ img.style.transform='scale(1)'; img.style.cursor='zoom-in'; } else { img.style.transform='scale(2)'; img.style.cursor='zoom-out'; } } });
+
+    const slides = Array.from(track.children);
+    const total = slides.length;
+    let idx = 0;
+    let isDragging = false, startX = 0, currentX = 0, deltaX = 0;
+    const threshold = 50; // px to swipe
+
+    function update(){
+      track.style.transform = `translateX(${ -idx * 100 }%)`;
+      el.dataset.index = idx;
+      if(thumbs){ Array.from(thumbs.children).forEach((t,i)=>t.classList.toggle('active', i===idx)); }
+    }
+
+    function goTo(i){ idx = ((i % total) + total) % total; update(); }
+
+    function prevSlide(){ goTo(idx - 1); }
+    function nextSlide(){ goTo(idx + 1); }
+
+    prev.addEventListener('click', (e)=>{ e.stopPropagation(); prevSlide(); });
+    next.addEventListener('click', (e)=>{ e.stopPropagation(); nextSlide(); });
+
+    // Pointer (mouse/touch) handling for swipe
+    viewport.addEventListener('pointerdown', (e)=>{
+      isDragging = true; startX = e.clientX; viewport.setPointerCapture(e.pointerId);
+    });
+    viewport.addEventListener('pointermove', (e)=>{
+      if(!isDragging) return; currentX = e.clientX; deltaX = currentX - startX;
+      // apply slight movement to track for feedback
+      track.style.transition = 'none';
+      track.style.transform = `translateX(${ -idx * 100 + (deltaX / viewport.clientWidth) * 100 }%)`;
+    });
+    viewport.addEventListener('pointerup', (e)=>{
+      if(!isDragging) return; isDragging = false; track.style.transition = '';
+      if(Math.abs(deltaX) > threshold){ if(deltaX < 0) nextSlide(); else prevSlide(); } else { update(); }
+      deltaX = 0; startX = 0;
+    });
+    viewport.addEventListener('pointercancel', ()=>{ if(isDragging){ isDragging=false; update(); deltaX=0; startX=0; } });
+
+    // click-to-zoom: single click toggles zoom on desktop; on mobile avoid triggering after swipe
+    let lastTap = 0;
+    track.addEventListener('click', (e)=>{
+      if(opts.zoom && e.target.tagName === 'IMG'){
+        const now = Date.now();
+        const dt = now - lastTap; lastTap = now;
+        // treat as double-tap to zoom on touch devices (dt small)
+        const img = e.target;
+        if(window.matchMedia('(pointer: coarse)').matches){
+          if(dt < 300){ // double-tap
+            img.classList.toggle('sat-zoomed');
+          }
+        } else {
+          // desktop single click toggles
+          img.classList.toggle('sat-zoomed');
+        }
+      }
+    });
+
+    // keyboard navigation when container is focused
+    el.tabIndex = 0;
+    el.addEventListener('keydown', (e)=>{ if(e.key==='ArrowLeft') prevSlide(); if(e.key==='ArrowRight') nextSlide(); });
+
+    // make sure slides are 100% width
     update();
+
     const id = Math.random().toString(36).slice(2,9);
     SaturnCarousel.instances.set(id, {el, photos, goTo});
     return id;
+  }
+  ,
+  getCurrentImage(containerOrSelector){
+    const el = typeof containerOrSelector === 'string' ? document.querySelector(containerOrSelector) : containerOrSelector;
+    if(!el) return null;
+    const idx = parseInt(el.dataset.index || '0', 10);
+    const imgs = el.querySelectorAll('.sat-slide img');
+    return imgs[idx] || imgs[0] || null;
   }
 };
 </script>
