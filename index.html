@@ -464,7 +464,7 @@
     </div>
     <div class="coll-grid">
       <div class="coll-card reveal" onclick="filterByCategory('new')">
-        <img src="https://i.ibb.co/JWQ696cS/Pull.png" alt="New Arrivals">
+        <img src="https://i.ibb.co/gLqq2VSB/Chat-GPT-Image-16-juil-2026-20-37-35.png" alt="New Arrivals">
         <span class="coll-badge">Nouveau</span>
         <div class="coll-label"><span class="name">New Arrivals</span><span class="sub">Découvrir →</span></div>
       </div>
@@ -770,9 +770,20 @@ const CATEGORIES = ['Hoodies','T-Shirts','Joggings','Accessories','Pochettes'];
 const SUBCATEGORIES = { 'Accessories': ['Casquettes','Chaussettes','Sacs'] };
 
 const REVIEWS_POOL = [
-  {name:'Jean-Marc A.', txt:"Qualité au-dessus de mes attentes, la matière est épaisse et la coupe tombe parfaitement. Livraison rapide jusqu'à Cotonou."},
-  {name:'Aïcha K.', txt:"Le rendu est exactement comme sur les photos, très belle finition. Je recommande de prendre une taille au-dessus pour l'effet oversize."},
-  {name:'Serge D.', txt:"Premier achat SATURN et je suis conquis. Les finitions sont soignées, on sent une vraie attention aux détails."},
+  {productId:'jogging-anthracite', name:'Marc O.', txt:'Tissu épais et confortable, la coupe anthracite est top pour un usage quotidien.'},
+  {productId:'jogging-noir', name:'Yasmine T.', txt:'Belle finition, taille bien, je recommande.'},
+  {productId:'cap-rings', name:'Bruno K.', txt:'Broderie propre et discrète, exactement ce que je cherchais.'},
+  {productId:'cap-eclipse', name:'Nadia S.', txt:'Casquette solide, le logo est net, très satisfaite.'},
+  {productId:'chaussette-noire', name:'Ismaël D.', txt:'Bonne tenue, tissu doux, parfait au quotidien.'},
+  {productId:'chaussette-blanche', name:'Chloé R.', txt:'Simples et bien finies, exactement comme sur les photos.'},
+  {productId:'bag-orbit', name:'Théo M.', txt:'Sac pratique, matière qui a l\'air solide, très content de l\'achat.'},
+  {productId:'pochette-iphone-noir', name:'Alia F.', txt:'Protège bien le téléphone, design sobre, j\'adore.'},
+  {productId:'pochette-iphone-blanc', name:'Kevin L.', txt:'Rendu propre et minimaliste, livraison rapide.'},
+  {productId:'pochette-ipad-noir', name:'Sarah B.', txt:'Bonne protection pour ma tablette, finition soignée.'},
+  {productId:'pochette-ipad-gris', name:'Junior A.', txt:'Exactement ce qu\'il me fallait, coloris discret et élégant.'},
+  {productId:'tee-blanc', name:'Diane K.', txt:'Coton agréable, coupe fidèle à la taille indiquée.'},
+  {productId:'tee-blanc-us', name:'Moussa T.', txt:'Belle qualité, tissu épais, je rachèterai.'},
+  {productId:'tee-noir-us', name:'Léa V.', txt:'Très satisfaite, la coupe est parfaite et le noir ne délave pas.'},
 ];
 
 let state = { category:'all', subcategory:null, colors:new Set(), sizes:new Set(), sort:'default' };
@@ -996,15 +1007,16 @@ function renderProductPage(){
   }
 
   // reviews
+  const productReviews = REVIEWS_POOL.filter(r => r.productId === p.id);
   document.getElementById('ppBigRating').textContent = p.rating || '—';
-  document.getElementById('ppReviewCount').textContent = p.reviews ? `Basé sur ${p.reviews} avis` : "Pas encore d'avis";
-  document.getElementById('ppReviewsList').innerHTML = p.reviews ? REVIEWS_POOL.map(r=>`
+  document.getElementById('ppReviewCount').textContent = productReviews.length ? `Basé sur ${productReviews.length} avis` : "Pas encore d'avis";
+  document.getElementById('ppReviewsList').innerHTML = productReviews.length ? productReviews.map(r=>`
     <div class="review-card">
       <div class="stars">★★★★★</div>
       <div class="name">${r.name}</div>
       <div class="txt">${r.txt}</div>
     </div>
-  `).join('') : '';
+  `).join('') : `<div class="review-card"><div class="name">Soyez le premier à laisser un avis</div></div>`;
 
   // similar products
   const similar = PRODUCTS.filter(x=>x.category===p.category && x.id!==p.id).slice(0,3);
