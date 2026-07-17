@@ -483,7 +483,7 @@
 </head>
 <body>
   <div class="promo-banner" id="promoBanner">
-    <div class="promo-text">-20% avec le code <strong>SATURN20</strong></div>
+    <div class="promo-text">-20% avec le code <strong>SATURN20</strong> — Offre de lancement</div>
     <button class="promo-close" aria-label="Fermer la promotion" onclick="closePromoBanner()">×</button>
   </div>
 
@@ -1579,6 +1579,46 @@ function logoutAccount(){
   openToast('Déconnecté.');
 }
 
+const PROMO_START_DATE = '2026-12-01';
+const PROMO_END_DATE = '2026-12-31';
+
+function isPromoActive(){
+  const now = new Date();
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const start = new Date(PROMO_START_DATE + 'T00:00:00');
+  const end = new Date(PROMO_END_DATE + 'T23:59:59');
+  return today >= start && today <= end;
+}
+
+function getPromoClosedDate(){
+  return localStorage.getItem('saturn_promo_closed_date');
+}
+
+function closePromoBanner(){
+  const banner = document.getElementById('promoBanner');
+  banner.style.display = 'none';
+  document.documentElement.style.setProperty('--promo-height','0px');
+  localStorage.setItem('saturn_promo_closed_date', new Date().toISOString().slice(0,10));
+}
+
+function renderPromoBanner(){
+  const banner = document.getElementById('promoBanner');
+  if(!isPromoActive()){
+    banner.style.display = 'none';
+    document.documentElement.style.setProperty('--promo-height','0px');
+    return;
+  }
+  const closedDate = getPromoClosedDate();
+  const today = new Date().toISOString().slice(0,10);
+  if(closedDate === today){
+    banner.style.display = 'none';
+    document.documentElement.style.setProperty('--promo-height','0px');
+  } else {
+    banner.style.display = 'flex';
+    document.documentElement.style.setProperty('--promo-height','40px');
+  }
+}
+
 function restoreAccountSession(){
   const currentEmail = localStorage.getItem('saturn_user_current');
   if(currentEmail){
@@ -1588,28 +1628,9 @@ function restoreAccountSession(){
   }
 }
 
-function restorePromoBanner(){
-  const promoClosed = localStorage.getItem('saturn_promo_closed');
-  const banner = document.getElementById('promoBanner');
-  if(promoClosed){
-    banner.style.display = 'none';
-    document.body.style.setProperty('--promo-height','0px');
-  } else {
-    banner.style.display = 'flex';
-    document.body.classList.add('promo-active');
-    document.body.style.setProperty('--promo-height','40px');
-  }
-}
-
-function closePromoBanner(){
-  document.getElementById('promoBanner').style.display = 'none';
-  document.body.style.setProperty('--promo-height','0px');
-  localStorage.setItem('saturn_promo_closed','1');
-}
-
 document.addEventListener('DOMContentLoaded', ()=>{
   restoreAccountSession();
-  restorePromoBanner();
+  renderPromoBanner();
 });
 
 setTimeout(()=>{
